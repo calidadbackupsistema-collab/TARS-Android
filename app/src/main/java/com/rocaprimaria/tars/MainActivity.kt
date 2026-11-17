@@ -34,6 +34,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
+import androidx.webkit.WebViewAssetLoader
 import org.json.JSONObject
 import java.util.Locale
 
@@ -44,8 +45,10 @@ import java.util.Locale
 class MainActivity : Activity() {
 
     companion object {
-        const val PAGE_HOST = "calidadbackupsistema-collab.github.io"
-        const val PAGE_URL = "https://calidadbackupsistema-collab.github.io/Asistente-Personal/"
+        // La web app viaja dentro del APK: abre al instante y funciona sin internet
+        const val PAGE_HOST = "appassets.androidplatform.net"
+        const val PAGE_URL = "https://appassets.androidplatform.net/assets/web/index.html"
+        const val WEB_URL = "https://calidadbackupsistema-collab.github.io/Asistente-Personal/"
         const val EXTRA_CMD = "tars_cmd"
         const val EXTRA_FROM_WATCH = "tars_from_watch"
         private const val REQ_AUDIO = 11
@@ -89,7 +92,14 @@ class MainActivity : Activity() {
         s.userAgentString = s.userAgentString + " TARSAndroid/1"
 
         web.addJavascriptInterface(Bridge(), "TarsNative")
+        val assetLoader = WebViewAssetLoader.Builder()
+            .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this))
+            .build()
         web.webViewClient = object : WebViewClient() {
+            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+                return assetLoader.shouldInterceptRequest(request.url)
+            }
+
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val u = request.url
                 if (u.scheme == "https" && u.host == PAGE_HOST) return false
@@ -105,7 +115,7 @@ class MainActivity : Activity() {
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
                 if (request.isForMainFrame) {
-                    showProblem("No se pudo abrir TARS (" + error.description + ").\nRevisa tu conexión a internet.")
+                    showProblem("No se pudo abrir TARS (" + error.description + ").")
                 }
             }
 
@@ -226,7 +236,7 @@ class MainActivity : Activity() {
         retry.setOnClickListener { retryLoad() }
         val chrome = Button(this)
         chrome.text = "Abrir en Chrome"
-        chrome.setOnClickListener { openExternal(Uri.parse(PAGE_URL)) }
+        chrome.setOnClickListener { openExternal(Uri.parse(WEB_URL)) }
         btnRow.addView(retry)
         btnRow.addView(chrome)
         val bLp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)

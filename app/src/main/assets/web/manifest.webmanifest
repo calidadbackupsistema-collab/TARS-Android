@@ -1,0 +1,17 @@
+{
+  "name": "TARS · Asistente Personal",
+  "short_name": "TARS",
+  "description": "Asistente de voz personal estilo TARS: siempre escuchando, en línea con Firebase y local sin internet.",
+  "lang": "es-MX",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#233b52",
+  "theme_color": "#34536d",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

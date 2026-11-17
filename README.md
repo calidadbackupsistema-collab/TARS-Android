@@ -30,5 +30,7 @@ Cada vez que se sube un cambio a `main`, GitHub Actions compila y publica en
 2. Sigue las indicaciones (Depuración inalámbrica en el reloj, mismo Wi-Fi).
 
 ## Notas
+- La web app va **dentro del APK** (`app/src/main/assets/web/index.html`): TARS abre al instante y sin internet.
+  Al actualizar el index.html de Asistente-Personal, copia el mismo archivo aquí para que la app lo incluya.
 - Ambos APK se firman con `keystore/tars.jks` (uso personal). Mantén el mismo archivo para poder actualizar sin desinstalar.
 - El inicio de sesión dentro de la app es con correo y contraseña (Google no permite su ventana de acceso dentro de apps con WebView).
