@@ -9,6 +9,20 @@ Versión nativa del asistente TARS. Usa la misma web app de
 - **Galaxy Watch:** toca el micrófono en el reloj, habla, y TARS responde desde el celular;
   la respuesta aparece y se lee en el reloj.
 
+## Cerebro
+
+En **Cerebro, voz y contactos**:
+
+| Ajuste | Para qué | Dónde se obtiene |
+|---|---|---|
+| Clave API de Gemini | Conversación en línea (plan gratuito) | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| Clave de Tavily | Buscar en internet y citar fuentes (1,000 búsquedas/mes gratis) | [app.tavily.com](https://app.tavily.com) |
+| Gemma 4 (2.6 GB) | Conversar sin internet; corre en el teléfono | Botón «Descargar» (usa Wi-Fi) |
+
+Orden: con internet usa Gemini (y Tavily cuando la pregunta necesita datos actuales); sin internet, los comandos
+básicos responden al instante y lo demás lo contesta Gemma 4. Claude sigue disponible como opción de pago.
+Las claves se guardan solo en el teléfono.
+
 ## Descargar
 
 Cada vez que se sube un cambio a `main`, GitHub Actions compila y publica en
