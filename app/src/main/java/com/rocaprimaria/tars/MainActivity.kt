@@ -36,7 +36,11 @@ import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
 import androidx.webkit.WebViewAssetLoader
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.Locale
+import java.util.concurrent.Executors
 
 /**
  * Pantalla principal: muestra la web app de TARS (GitHub Pages) y le da un puente nativo
@@ -64,6 +68,7 @@ class MainActivity : Activity() {
     }
 
     private lateinit var web: WebView
+    private val netPool = Executors.newFixedThreadPool(3)
     private var tts: TextToSpeech? = null
     private var ttsReady = false
     private var pageReady = false
@@ -523,6 +528,64 @@ class MainActivity : Activity() {
                     "battery" -> openBatterySettings()
                     else -> tryStart(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName")))
                 }
+            }
+        }
+
+        // ---------- Red: la web app pide aquí sus llamadas a Gemini/Tavily (sin bloqueos CORS) ----------
+
+        @JavascriptInterface
+        fun httpRequest(id: String, url: String, method: String, headersJson: String, body: String, timeoutMs: Int) {
+            netPool.execute {
+                var status = 0
+                var text: String
+                try {
+                    val u = URL(url)
+                    if (u.protocol != "https") throw IllegalArgumentException("Solo se permite https")
+                    val c = u.openConnection() as HttpURLConnection
+                    c.requestMethod = method.ifBlank { "POST" }
+                    c.connectTimeout = 15000
+                    c.readTimeout = timeoutMs.coerceIn(5000, 120000)
+                    val h = JSONObject(headersJson.ifBlank { "{}" })
+                    h.keys().forEach { k -> c.setRequestProperty(k, h.optString(k)) }
+                    if (c.requestMethod != "GET" && body.isNotEmpty()) {
+                        c.doOutput = true
+                        c.outputStream.use { it.write(body.toByteArray(Charsets.UTF_8)) }
+                    }
+                    status = c.responseCode
+                    val stream = if (status >= 400) c.errorStream else c.inputStream
+                    val out = ByteArrayOutputStream()
+                    stream?.use { it.copyTo(out) }
+                    text = out.toString("UTF-8")
+                    c.disconnect()
+                } catch (e: Exception) {
+                    status = 0
+                    text = e.message ?: e.javaClass.simpleName
+                }
+                js("window.__tarsHttp&&window.__tarsHttp(" + JSONObject.quote(id) + "," + status + "," + JSONObject.quote(text) + ")")
+            }
+        }
+
+        // ---------- Cerebro sin internet (Gemma 4 local) ----------
+
+        @JavascriptInterface
+        fun localStatus(): String = LocalBrain.status(this@MainActivity)
+
+        @JavascriptInterface
+        fun localDownload(allowMobile: Boolean): String = LocalBrain.download(this@MainActivity, allowMobile)
+
+        @JavascriptInterface
+        fun localCancel() = LocalBrain.cancel(this@MainActivity)
+
+        @JavascriptInterface
+        fun localDelete() = LocalBrain.delete(this@MainActivity)
+
+        @JavascriptInterface
+        fun localWarmUp() = LocalBrain.warmUp(this@MainActivity)
+
+        @JavascriptInterface
+        fun localGenerate(id: String, system: String, historyJson: String) {
+            LocalBrain.generate(this@MainActivity, system, historyJson) { ok, text ->
+                js("window.__tarsLocal&&window.__tarsLocal(" + JSONObject.quote(id) + "," + ok + "," + JSONObject.quote(text) + ")")
             }
         }
 
