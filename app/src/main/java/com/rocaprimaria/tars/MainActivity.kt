@@ -97,7 +97,7 @@ class MainActivity : Activity() {
             .build()
         web.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
-                return assetLoader.shouldInterceptRequest(request.url)
+                return assetLoader.shouldInterceptRequest(request.url) ?: WebCache.intercept(this@MainActivity, request)
             }
 
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
@@ -315,6 +315,12 @@ class MainActivity : Activity() {
         super.onDestroy()
     }
 
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        // Libera Gemma si Android pide memoria y TARS no está en pantalla
+        if (level >= TRIM_MEMORY_BACKGROUND && !visible) LocalBrain.unload()
+    }
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (web.canGoBack()) web.goBack() else moveTaskToBack(true)
@@ -510,10 +516,43 @@ class MainActivity : Activity() {
             }
         }
 
+        /** Abre un enlace o app y confirma si Android realmente lo abrió. */
         @JavascriptInterface
-        fun openUrl(url: String) {
-            runOnUiThread { openExternal(Uri.parse(url)) }
+        fun openUrl(url: String): Boolean {
+            return try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                true
+            } catch (_: Exception) {
+                false
+            }
         }
+
+        // ---------- Cerebro local (Gemma 4 E2B) ----------
+        @JavascriptInterface
+        fun llmStatus(): String = LocalBrain.statusJson(applicationContext)
+
+        @JavascriptInterface
+        fun llmDownload() {
+            LocalBrain.download(applicationContext) { ev -> runOnUiThread { sendEvent(ev) } }
+        }
+
+        @JavascriptInterface
+        fun llmCancel() = LocalBrain.cancel()
+
+        @JavascriptInterface
+        fun llmDelete() = LocalBrain.deleteModel(applicationContext)
+
+        @JavascriptInterface
+        fun llmUnload() = LocalBrain.unload()
+
+        @JavascriptInterface
+        fun llmAsk(id: String, prompt: String) {
+            LocalBrain.ask(applicationContext, id, prompt) { ev -> runOnUiThread { sendEvent(ev) } }
+        }
+
+        // ---------- Diagnóstico para pruebas en el S24 Ultra ----------
+        @JavascriptInterface
+        fun diagnostics(): String = Diagnostics.json(this@MainActivity)
 
         @JavascriptInterface
         fun openSettings(what: String) {

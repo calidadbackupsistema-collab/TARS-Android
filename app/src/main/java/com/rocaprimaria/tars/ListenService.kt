@@ -40,6 +40,13 @@ class ListenService : Service(), RecognitionListener {
         @Volatile var instance: ListenService? = null
         @Volatile var running = false
         @Volatile var lastFromWatch = false
+        // Métricas para el diagnóstico (batería y funcionamiento con pantalla apagada)
+        @Volatile var startedAt = 0L
+        @Volatile var batteryAtStart = -1
+        @Volatile var screenOffMs = 0L
+        @Volatile var wakeCount = 0
+        @Volatile var commandCount = 0
+        @Volatile var modelReady = false
 
         private const val CH_LISTEN = "tars_listen"
         private const val CH_CMD = "tars_cmd"
@@ -133,6 +140,12 @@ class ListenService : Service(), RecognitionListener {
         super.onCreate()
         instance = this
         running = true
+        startedAt = SystemClock.elapsedRealtime()
+        batteryAtStart = try { Diagnostics.battery(this) } catch (_: Exception) { -1 }
+        screenOffMs = 0L
+        wakeCount = 0
+        commandCount = 0
+        registerScreenReceiver()
         ensureChannels(this)
         startInForeground("Preparando la escucha…")
         loadWakeWords()
@@ -154,6 +167,8 @@ class ListenService : Service(), RecognitionListener {
     override fun onDestroy() {
         running = false
         instance = null
+        modelReady = false
+        try { unregisterReceiver(screenReceiver) } catch (_: Exception) {}
         try {
             speech?.stop()
             speech?.shutdown()
@@ -235,6 +250,7 @@ class ListenService : Service(), RecognitionListener {
             }
             val m = Model(dir.absolutePath)
             model = m
+            modelReady = true
             main.post { startRecognition() }
         } catch (e: Exception) {
             status("No pude preparar la escucha: ${e.message ?: "error"}. Revisa tu conexión y vuelve a activar.", false)
@@ -352,6 +368,26 @@ class ListenService : Service(), RecognitionListener {
             .replace(Regex("[^a-z0-9ñ ]"), "")
             .trim()
 
+    // Mide cuánto tiempo escucha con la pantalla apagada
+    private var screenOffSince = 0L
+    private val screenReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(c: Context, i: Intent) {
+            val now = SystemClock.elapsedRealtime()
+            if (i.action == Intent.ACTION_SCREEN_OFF) screenOffSince = now
+            else if (i.action == Intent.ACTION_SCREEN_ON && screenOffSince > 0) {
+                screenOffMs += now - screenOffSince
+                screenOffSince = 0
+            }
+        }
+    }
+
+    private fun registerScreenReceiver() {
+        val f = android.content.IntentFilter()
+        f.addAction(Intent.ACTION_SCREEN_OFF)
+        f.addAction(Intent.ACTION_SCREEN_ON)
+        registerReceiver(screenReceiver, f)
+    }
+
     private fun beep() {
         try {
             tone?.startTone(ToneGenerator.TONE_PROP_ACK, 150)
@@ -379,6 +415,7 @@ class ListenService : Service(), RecognitionListener {
         val idx = words.indexOfFirst { norm(it) in wake }
         if (idx < 0) return
         val cmd = words.drop(idx + 1).joinToString(" ").trim()
+        wakeCount++
         if (cmd.isEmpty()) {
             awaitingUntil = now + 8000
             beep()
@@ -389,6 +426,7 @@ class ListenService : Service(), RecognitionListener {
     }
 
     private fun send(cmd: String) {
+        commandCount++
         status("«$cmd»")
         main.post { dispatch(applicationContext, cmd, false) }
         main.postDelayed({ status("Escuchando «TARS»") }, 4000)

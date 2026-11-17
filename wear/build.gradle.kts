@@ -7,7 +7,7 @@ val runNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
 
 android {
     namespace = "com.rocaprimaria.tars.wear"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         // Debe ser el mismo applicationId que la app del celular para que se comuniquen
