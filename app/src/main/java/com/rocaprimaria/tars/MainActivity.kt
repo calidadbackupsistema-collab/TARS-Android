@@ -15,7 +15,18 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.view.Gravity
+import android.view.View
+import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
+import android.webkit.RenderProcessGoneDetail
+import android.webkit.WebResourceError
+import android.webkit.WebResourceResponse
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.webkit.PermissionRequest
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -60,9 +71,13 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         current = this
 
+        WebView.setWebContentsDebuggingEnabled(true)
         web = WebView(this)
         web.setBackgroundColor(Color.parseColor("#233B52"))
-        setContentView(web)
+        val root = FrameLayout(this)
+        root.addView(web, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+        root.addView(buildOverlay(), FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+        setContentView(root)
 
         val s = web.settings
         s.javaScriptEnabled = true
@@ -85,15 +100,55 @@ class MainActivity : Activity() {
             override fun onPageFinished(view: WebView, url: String) {
                 pageReady = true
                 flushPending()
+                checkAppStarted(0)
+            }
+
+            override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+                if (request.isForMainFrame) {
+                    showProblem("No se pudo abrir TARS (" + error.description + ").\nRevisa tu conexión a internet.")
+                }
+            }
+
+            override fun onReceivedHttpError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceResponse) {
+                if (request.isForMainFrame) {
+                    showProblem("El servidor respondió con error " + errorResponse.statusCode + ".")
+                }
+            }
+
+            override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+                rendererDead = true
+                showProblem("La vista de TARS se cerró inesperadamente. Toca Reintentar.")
+                return true
             }
         }
         web.webChromeClient = object : WebChromeClient() {
             override fun onPermissionRequest(request: PermissionRequest) {
                 runOnUiThread { request.grant(request.resources) }
             }
+
+            override fun onProgressChanged(view: WebView, newProgress: Int) {
+                if (overlay.visibility == View.VISIBLE && !problemShown) {
+                    progress.progress = newProgress
+                    overlayText.text = "Cargando TARS… $newProgress%"
+                }
+            }
+
+            override fun onConsoleMessage(m: ConsoleMessage): Boolean {
+                if (m.messageLevel() == ConsoleMessage.MessageLevel.ERROR) {
+                    consoleErrors.add(m.message() + " (línea " + m.lineNumber() + ")")
+                    while (consoleErrors.size > 4) consoleErrors.removeAt(0)
+                }
+                return false
+            }
         }
 
         if (savedInstanceState != null) web.restoreState(savedInstanceState) else web.loadUrl(PAGE_URL)
+        overlayTimeout = Runnable {
+            if (overlay.visibility == View.VISIBLE && !problemShown) {
+                showProblem("TARS está tardando demasiado en cargar.")
+            }
+        }
+        handler.postDelayed(overlayTimeout!!, 45000)
 
         tts = TextToSpeech(this) { status ->
             ttsReady = status == TextToSpeech.SUCCESS
@@ -113,7 +168,113 @@ class MainActivity : Activity() {
         }
 
         handleIntent(intent)
+        // El micrófono se pide de inmediato, sin esperar a que cargue la página
+        startListening()
         firstRunSetup()
+    }
+
+    // ---------- Pantalla de carga y diagnóstico ----------
+
+    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
+    private lateinit var overlay: LinearLayout
+    private lateinit var overlayText: TextView
+    private lateinit var progress: ProgressBar
+    private lateinit var btnRow: LinearLayout
+    private var problemShown = false
+    private var rendererDead = false
+    private var overlayTimeout: Runnable? = null
+    private val consoleErrors = ArrayList<String>()
+
+    private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
+
+    private fun buildOverlay(): View {
+        overlay = LinearLayout(this)
+        overlay.orientation = LinearLayout.VERTICAL
+        overlay.gravity = Gravity.CENTER
+        overlay.setBackgroundColor(Color.parseColor("#233B52"))
+        overlay.setPadding(dp(32), dp(32), dp(32), dp(32))
+
+        val title = TextView(this)
+        title.text = "TARS"
+        title.setTextColor(Color.WHITE)
+        title.textSize = 34f
+        title.letterSpacing = 0.3f
+        title.gravity = Gravity.CENTER
+        overlay.addView(title)
+
+        progress = ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal)
+        progress.max = 100
+        val pLp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(8))
+        pLp.topMargin = dp(24)
+        overlay.addView(progress, pLp)
+
+        overlayText = TextView(this)
+        overlayText.text = "Cargando TARS…"
+        overlayText.setTextColor(Color.parseColor("#C3D5E3"))
+        overlayText.textSize = 15f
+        overlayText.gravity = Gravity.CENTER
+        val tLp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        tLp.topMargin = dp(16)
+        overlay.addView(overlayText, tLp)
+
+        btnRow = LinearLayout(this)
+        btnRow.orientation = LinearLayout.HORIZONTAL
+        btnRow.gravity = Gravity.CENTER
+        btnRow.visibility = View.GONE
+        val retry = Button(this)
+        retry.text = "Reintentar"
+        retry.setOnClickListener { retryLoad() }
+        val chrome = Button(this)
+        chrome.text = "Abrir en Chrome"
+        chrome.setOnClickListener { openExternal(Uri.parse(PAGE_URL)) }
+        btnRow.addView(retry)
+        btnRow.addView(chrome)
+        val bLp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        bLp.topMargin = dp(20)
+        overlay.addView(btnRow, bLp)
+        return overlay
+    }
+
+    /** Confirma que la web app arrancó (definió su puente); si no, muestra el motivo. */
+    private fun checkAppStarted(attempt: Int) {
+        web.evaluateJavascript("typeof window.__tarsNativeCommand") { res ->
+            if (res != null && res.contains("function")) {
+                overlay.visibility = View.GONE
+                overlayTimeout?.let { handler.removeCallbacks(it) }
+            } else if (attempt < 40) {
+                overlayText.text = "Iniciando TARS…"
+                handler.postDelayed({ checkAppStarted(attempt + 1) }, 500)
+            } else {
+                showProblem("La página cargó pero TARS no pudo iniciar.")
+            }
+        }
+    }
+
+    private fun showProblem(msg: String) {
+        runOnUiThread {
+            problemShown = true
+            overlay.visibility = View.VISIBLE
+            progress.visibility = View.GONE
+            val extra = if (consoleErrors.isEmpty()) "" else "\n\nDetalle técnico:\n" + consoleErrors.joinToString("\n")
+            overlayText.text = msg + extra
+            btnRow.visibility = View.VISIBLE
+        }
+    }
+
+    private fun retryLoad() {
+        if (rendererDead) {
+            recreate()
+            return
+        }
+        problemShown = false
+        consoleErrors.clear()
+        progress.visibility = View.VISIBLE
+        progress.progress = 0
+        btnRow.visibility = View.GONE
+        overlayText.text = "Cargando TARS…"
+        pageReady = false
+        web.reload()
+        overlayTimeout?.let { handler.removeCallbacks(it); handler.postDelayed(it, 45000) }
     }
 
     override fun onNewIntent(intent: Intent) {
