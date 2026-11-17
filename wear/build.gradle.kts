@@ -41,9 +41,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     lint {
         checkReleaseBuilds = false
         abortOnError = false
@@ -53,4 +50,10 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("com.google.android.gms:play-services-wearable:18.2.0")
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
 }

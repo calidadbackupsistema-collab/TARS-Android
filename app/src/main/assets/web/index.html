@@ -27,7 +27,7 @@
 
 .side-signature{position:fixed;left:0;top:47%;z-index:10;width:47px;height:65px;background:#152b36e6;border:1px solid #cceaf52b;border-left:0;border-radius:0 22px 22px 0;display:grid;place-items:center;box-shadow:4px 6px 18px #10222b30}.side-signature .roca-brand{margin:0}.side-signature .roca-brand img{width:27px;height:31px;border-radius:50%;opacity:.85;object-fit:cover}.rail{margin-left:20px}.layout{grid-template-columns:108px 1fr}.hero .orb-space{height:330px;display:flex;flex-direction:column;justify-content:center;gap:17px}.mode-circle{width:260px;height:260px;border-radius:50%;position:relative;overflow:hidden;border:1px solid #d7f3ff55;background:#10232d;box-shadow:0 0 0 8px #b8e5f407,0 14px 35px #0c253b38}.mode-circle video{display:block;width:100%;height:100%;object-fit:cover}.mode-circle .speech-waves{width:100%;height:130px}.is-speaking .mode-circle{box-shadow:0 0 0 8px #b8e5f40b,0 0 35px #72dada24}#modeCaption{font-size:11px;letter-spacing:1px;color:var(--muted)}#talk[hidden]{display:none!important}#write{border:1px solid var(--line);border-radius:24px;padding:13px 30px;background:#d5f3ff15}#voiceStatus{padding:9px 0}.voice-status.error{color:#f6d4af}.chat-speaking{font-size:11px;color:var(--cyan);min-height:18px;margin:10px 0}.preview .layout{grid-template-columns:1fr}.preview .rail{margin-left:0}.preview .side-signature{top:36%;width:34px;height:49px}.preview .side-signature img{width:22px;height:25px}@media(max-width:720px){.rail{margin-left:0}.side-signature{top:36%;width:32px;height:47px;border-radius:0 17px 17px 0}.side-signature .roca-brand img{width:21px;height:24px}.hero .orb-space{height:300px}.mode-circle{width:230px;height:230px}}
 
-[hidden]{display:none!important}.voice-only{display:none}.voice-params{margin-top:17px}.voice-params p{font-size:11px;margin:8px 0 12px}#openBrain{width:100%;justify-content:center;font-size:11px}
+[hidden]{display:none!important}.voice-only{display:none}.mem-list{max-height:160px;overflow:auto}.mem-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;padding:6px 0;border-bottom:1px solid var(--line)}.diag{white-space:pre-wrap;font:11px/1.5 Consolas,monospace;background:#16374b44;border:1px solid var(--line);border-radius:12px;padding:10px;max-height:220px;overflow:auto;margin:0;color:var(--ink)}.act-status{font-size:11px;color:var(--cyan);margin-top:8px}.act-status a{color:var(--lime)}.message.cloud{border-color:#dffa8566}.voice-params{margin-top:17px}.voice-params p{font-size:11px;margin:8px 0 12px}#openBrain{width:100%;justify-content:center;font-size:11px}
 #actionSlot a{display:inline-flex;margin-top:12px;text-decoration:none;color:var(--ink)}.message .act-link{display:inline-flex;margin-top:10px;font-size:12px;text-decoration:none;color:var(--ink)}
 .voice-timers{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.voice-timers .chip{display:inline-flex;align-items:center;gap:4px;font-size:11px}.timer-x{border:0;background:transparent;padding:0 2px;color:#f6d4af}
 #voiceVisual{cursor:pointer}.mode-circle{transition:box-shadow .35s,border-color .35s}
@@ -51,14 +51,16 @@ dialog .field textarea{min-height:90px;margin:0;font-family:Consolas,monospace;f
 <div class="lower"><article class="card"><div class="card-head"><h2>Un paso menos</h2><span class="sub">Acciones rápidas</span></div><div class="quick-list"><button class="quick" id="openApp"><span class="bubble"><svg class="icon"><use href="#apps"/></svg></span>Abrir una aplicación<span class="arrow">↗</span></button><button class="quick" id="createNote"><span class="bubble"><svg class="icon"><use href="#note"/></svg></span>Guardar una nota<span class="arrow">↗</span></button><button class="quick" id="timer"><span class="bubble"><svg class="icon"><use href="#clock"/></svg></span>Temporizador de enfoque<span class="arrow">↗</span></button></div><div class="voice-timers" id="voiceTimers"></div></article><article class="card"><div class="card-head"><h2>Honestidad, siempre.</h2><span class="round">✧</span></div><p>Si no sé algo, lo digo.<br>Si una acción falla, también.<br>El sarcasmo es opcional.<br>Inventar resultados, no.</p><div style="margin-top:24px;border-top:1px solid var(--line);padding-top:18px"><span class="sub">MI ESTADO ACTUAL</span><p style="margin-bottom:0" id="selfStatus">Mucho estilo.<br>Motor de IA aún por integrar.</p></div></article><article class="card device"><div class="card-head"><h2>También en tu muñeca</h2><span class="chip">Vista previa</span></div><div class="watch-wrap"><div class="watch"><svg class="speech-waves" viewBox="0 0 320 180" preserveAspectRatio="none" aria-hidden="true"><path stroke="#6cf1f2"/><path stroke="#85eea0"/><path stroke="#e9ed83"/></svg><span class="sub">10:24</span><div class="code-panel" role="img" aria-label="Panel decorativo animado de código binario con letras latinas, griegas y arameas"><div class="code-header" aria-hidden="true"><span>COGNITIVE / CORE</span><span>01</span></div><div class="code-columns" aria-hidden="true"><div class="code-column"></div><div class="code-column secondary-code"></div></div><div class="code-footer" aria-hidden="true"><span>LOCAL INTERFACE</span><span>VISUAL DEMO</span></div></div><b class="assistant-name">TARS</b><button id="watchTalk" aria-label="Vista previa de voz en el reloj"><svg class="icon" style="width:15px"><use href="#mic"/></svg></button></div><div class="device-copy"><h3>Galaxy Watch 7</h3><p>Una extensión<br>de tu asistente.</p><span class="sub">Sin vincular</span></div></div></article></div></section>
 <section id="chatView" class="view"><article class="card"><div class="card-head"><h2>Conversación con <span class="assistant-name">TARS</span></h2><span class="chip" id="chatChip">Respuestas de demostración</span></div><div class="chat-speaking" id="chatVoiceStatus" role="status" aria-live="polite"></div><div class="chat-window" id="messages" aria-live="polite"></div><form class="composer" id="chatForm"><input id="chatInput" aria-label="Mensaje" placeholder="Escribe algo. Mi paciencia viene incluida." maxlength="2000" required><button class="primary" type="submit" aria-label="Enviar mensaje">↗</button></form><p class="sub" id="chatNote">Este cascarón usa respuestas predefinidas. No tiene un modelo de IA conectado.</p></article></section>
 <section id="notesView" class="view"><article class="card"><div class="card-head"><h2>Tus notas</h2><button class="pill" id="addNote">＋ Crear nota</button></div><div id="notesList"></div></article></section>
-<footer class="bottom-note"><span>TARS / GLASS EDITION · 0.8</span><span id="footNote">Cascarón interactivo · Sin micrófono, nube ni control del dispositivo</span></footer></main></div>
+<footer class="bottom-note"><span>TARS / GLASS EDITION · 0.9</span><span id="footNote">Cascarón interactivo · Sin micrófono, nube ni control del dispositivo</span></footer></main></div>
 <dialog id="infoDialog"><div class="card-head"><h2 id="dialogTitle"></h2><button class="round" id="closeDialog" aria-label="Cerrar">×</button></div><p id="dialogBody"></p><div id="dialogExtra"></div><div class="dialog-actions"><button class="pill" id="dialogDone">Entendido</button></div></dialog>
 <dialog id="noteDialog"><h2>Una cosa menos en tu cabeza.</h2><p>Guarda una nota en este navegador.</p><form id="noteForm"><textarea id="noteText" aria-label="Contenido de la nota" placeholder="Lo que no quieres olvidar…" maxlength="5000" required></textarea><div class="dialog-actions"><button class="pill" id="cancelNote" type="button">Cancelar</button><button class="primary" type="submit">Guardar nota</button></div></form></dialog>
 <dialog id="micDialog"><h2>Activar la escucha</h2><p id="micBody">TARS necesita el micrófono para escucharte todo el tiempo.</p><div class="dialog-actions"><button class="pill" id="micLater" type="button">Ahora no</button><button class="primary" id="micAllow" type="button">Permitir micrófono</button></div></dialog>
 <dialog id="brainDialog"><div class="card-head"><h2>Cerebro, voz y contactos</h2><button class="round" id="closeBrain" aria-label="Cerrar">×</button></div>
 <div class="field"><label>Cuenta y sincronización</label><p class="hint" id="acctText" style="margin:0 0 10px"></p><button class="pill" id="acctBtn" type="button">Iniciar sesión con Google</button><div id="emailBox" style="margin-top:12px"><input type="email" id="acctEmail" placeholder="correo@ejemplo.com" autocomplete="email" style="margin-bottom:8px"><input type="password" id="acctPass" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password"><div class="dialog-actions" style="justify-content:flex-start;flex-wrap:wrap;margin-top:10px"><button class="pill" id="emailIn" type="button">Entrar</button><button class="pill" id="emailUp" type="button">Crear cuenta</button><button class="secondary" id="emailReset" type="button" style="padding:8px 4px;font-size:11px">Olvidé mi contraseña</button></div></div><p class="hint" id="acctErr" style="color:#f6d4af"></p></div>
-<div class="field"><label for="cfgKey">Clave API de Claude</label><input type="password" id="cfgKey" placeholder="sk-ant-…" autocomplete="off"><div class="hint">Sin clave, o sin internet, funciono en modo local con comandos básicos. La clave se guarda solo en este teléfono y no se sube a la nube.</div></div>
-<div class="field"><label for="cfgModel">Modelo</label><select id="cfgModel"><option value="claude-haiku-5-5">Claude Haiku 5.5 · rápido</option><option value="claude-sonnet-5-5">Claude Sonnet 5.5 · más listo</option></select></div>
+<div class="field"><label>Cerebro local · Gemma 4 E2B (sin internet)</label><p class="hint" id="llmState" style="margin:0"></p><div class="dialog-actions" style="justify-content:flex-start;flex-wrap:wrap;margin-top:8px"><button class="pill" id="llmDl" type="button">Descargar (2.6 GB)</button><button class="pill" id="llmBench" type="button">Probar velocidad</button><button class="secondary" id="llmDel" type="button" style="padding:8px 4px;font-size:11px">Borrar modelo</button></div></div>
+<div class="field"><label for="cfgCloud">Nube · Gemini Flash (opcional)</label><select id="cfgCloud"><option value="auto">Solo cuando haga falta (recomendado)</option><option value="always">Siempre que haya internet</option><option value="never">Nunca</option></select><div style="display:flex;gap:10px;align-items:center;margin-top:8px"><span class="hint" style="flex:1;margin:0">Límite diario de consultas a la nube</span><input type="text" id="cfgCloudDaily" inputmode="numeric" style="width:90px"></div><p class="hint" id="cloudState"></p><input type="text" id="cfgAppCheck" placeholder="Clave de sitio reCAPTCHA Enterprise (App Check, opcional)" autocomplete="off"><div class="hint">Gemini se usa a través de Firebase AI Logic: la app no guarda claves privadas. Al usar la nube se envían tu mensaje y el contexto (memoria y notas recientes). Cada respuesta de la nube se marca «NUBE · Gemini».</div></div>
+<div class="field"><label>Memoria de TARS</label><div id="memList" class="mem-list"></div><div class="dialog-actions" style="justify-content:flex-start;flex-wrap:wrap;margin-top:8px"><button class="pill" id="memClear" type="button">Borrar memoria</button><button class="pill" id="chatClear" type="button">Borrar conversación</button></div><label class="hint" style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="checkbox" id="cfgSyncHist" style="width:auto"> Sincronizar el historial de conversación en la nube</label><div class="hint">Por voz: «TARS, recuerda que…», «¿qué recuerdas de mí?», «olvida que…», «borra tu memoria».</div></div>
+<div class="field"><label>Diagnóstico y pruebas</label><pre id="diagBox" class="diag"></pre><div class="dialog-actions" style="justify-content:flex-start;flex-wrap:wrap;margin-top:8px"><button class="pill" id="diagRefresh" type="button">Actualizar</button><button class="pill" id="diagCopy" type="button">Copiar reporte</button></div></div>
 <div class="field"><label for="cfgEngine">Motor de voz</label><select id="cfgEngine"><option value="neural">Voz TARS · neural en el teléfono</option><option value="system">Voz del sistema</option></select><div class="hint">La voz TARS se descarga una sola vez (unos 60 MB; usa Wi-Fi) y después funciona sin internet.</div></div>
 <div class="field"><label for="cfgTimbre">Timbre</label><select id="cfgTimbre"><option value="es_MX-ald-medium">Grave · español de México</option><option value="es_MX-claude-high">Nítido · español de México (alta calidad, descarga mayor)</option></select></div>
 <div class="field"><label for="cfgRobot">Efecto robot <output id="cfgRobotVal" style="color:var(--lime);float:right"></output></label><input type="range" id="cfgRobot" min="0" max="100" step="5"></div>
@@ -134,7 +136,7 @@ const modes={
  comfort:{es:'Consuelo',en:'Comfort',humor:5,sarcasm:0,brevity:35,desc:['Escucha cálida y paciente, sin sarcasmo ni presión.','Warm, patient listening, without sarcasm or pressure.'],line:['Aquí estoy. Podemos ir un paso a la vez.','I’m here. We can take this one step at a time.']}
 };
 const pairs=[
-['Tu espacio personal','Your personal space'],['Buenos días, Alberto','Good morning, Alberto'],['Prototipo interactivo','Interactive prototype'],['＋ Nueva conversación','＋ New conversation'],['Concepto 02 / Glass','Concept 02 / Glass'],['Hablar conmigo','Talk to me'],['Escribir ↗','Type ↗'],['Interfaz local · IA pendiente','Local interface · AI pending'],['Activación por nombre ↗','Wake phrase ↗'],['A tu manera','Your way'],['Nombre del asistente','Assistant name'],['Humor','Humor'],['Sarcasmo','Sarcasm'],['Brevedad','Brevity'],['Confirmar acciones delicadas','Confirm sensitive actions'],['Ajustes guardados en este navegador.','Settings saved in this browser.'],['Así fluye tu asistente','Your assistant in flow'],['Visualización ilustrativa','Illustrative visualization'],['En sintonía','In sync'],['Voz · comprensión · respuesta','Voice · understanding · response'],['Todo empieza con tu voz.','It all starts with your voice.'],['El resto lo estamos construyendo.','We’re building the rest.'],['Voz','Voice'],['Comprensión','Understanding'],['Respuesta','Response'],['Sin datos de telemetría','No telemetry data'],['Un paso menos','One less step'],['Acciones rápidas','Quick actions'],['Abrir una aplicación','Open an app'],['Guardar una nota','Save a note'],['Temporizador de enfoque','Focus timer'],['Honestidad, siempre.','Honesty, always.'],['Si no sé algo, lo digo.','If I don’t know, I say so.'],['Si una acción falla, también.','If an action fails, likewise.'],['El sarcasmo es opcional.','Sarcasm is optional.'],['Inventar resultados, no.','Inventing results is not.'],['MI ESTADO ACTUAL','MY CURRENT STATUS'],['Mucho estilo.','Plenty of style.'],['Motor de IA aún por integrar.','AI engine not integrated yet.'],['También en tu muñeca','On your wrist, too'],['Vista previa','Preview'],['Una extensión','An extension'],['de tu asistente.','of your assistant.'],['Sin vincular','Not paired'],['Cascarón interactivo · Sin micrófono, nube ni control del dispositivo','Interactive shell · No microphone, cloud or device control'],['Conversación con','Conversation with'],['Respuestas de demostración','Demo responses'],['Este cascarón usa respuestas predefinidas. No tiene un modelo de IA conectado.','This shell uses predefined responses. No AI model is connected.'],['Tus notas','Your notes'],['＋ Crear nota','＋ Create note'],['Entendido','Got it'],['Una cosa menos en tu cabeza.','One less thing on your mind.'],['Guarda una nota en este navegador.','Save a note in this browser.'],['Cancelar','Cancel'],['Guardar nota','Save note'],['Nada por aquí. Una mente despejada o una nota pendiente.','Nothing here. A clear mind, or a note waiting to be written.'],['Leer capítulo','Read chapter'],['Buscar','Search'],['Biblia','Bible'],['66 libros · 1,189 capítulos · 31,102 versículos · Sin conexión','66 books · 1,189 chapters · 31,102 verses · Offline'],['Firme en lo esencial.','Grounded in what matters.'],['Inicio','Home'],['Conversación','Conversation'],['Mis notas','My notes'],['Personalidad','Personality'],['Alternar vista móvil','Toggle mobile preview'],['Cambiar idioma','Switch language'],['Cambiar tema','Switch theme'],['Mensaje','Message'],['Enviar mensaje','Send message'],['Cerrar','Close'],['Contenido de la nota','Note text'],['Lo que no quieres olvidar…','What you don’t want to forget…'],['Libro','Book'],['Capítulo','Chapter'],['Cerrar Biblia','Close Bible'],['Buscar en la Biblia','Search the Bible'],['Buscar una palabra o frase…','Search for a word or phrase…'],['Escribe algo. Mi paciencia viene incluida.','Type something. Patience is included.'],['Vista previa de voz en el reloj','Watch voice preview'],['AJUSTES POR VOZ','VOICE SETTINGS'],['Humor, sarcasmo, brevedad y honestidad se ajustan hablando: «TARS, baja tu humor a 60» · «TARS, modo consuelo» · «TARS, ¿cómo estás configurado?»','Humor, sarcasm, brevity and honesty are set by voice: “TARS, set humor to 60” · “TARS, comfort mode” · “TARS, how are you configured?”'],['⚙ Cerebro, voz y contactos','⚙ Brain, voice & contacts'],['Cerebro, voz y contactos','Brain, voice & contacts'],['Activar la escucha','Turn on listening'],['Ahora no','Not now'],['Permitir micrófono','Allow microphone'],['Clave API de Claude','Claude API key'],['Modelo','Model'],['Variantes de la palabra de activación','Wake word variants'],['Contactos (llamadas y WhatsApp)','Contacts (calls & WhatsApp)'],['Una línea por contacto: Nombre = número.','One contact per line: Name = number.'],['Probar voz','Test voice'],['Cuenta y sincronización','Account & sync'],['Entrar','Sign in'],['Crear cuenta','Create account'],['Olvidé mi contraseña','Forgot password'],['Contraseña (mínimo 6 caracteres)','Password (min. 6 characters)'],['⤓ Instalar app','⤓ Install app'],['Sin clave, o sin internet, funciono en modo local con comandos básicos. La clave se guarda solo en este teléfono y no se sube a la nube.','Without a key, or offline, I run in local mode with basic commands. The key stays on this phone and is never uploaded.'],['Motor de voz','Voice engine'],['Voz TARS · neural en el teléfono','TARS voice · neural, on device'],['Voz del sistema','System voice'],['Timbre','Timbre'],['Grave · español de México','Deep · Mexican Spanish'],['Nítido · español de México (alta calidad, descarga mayor)','Crisp · Mexican Spanish (high quality, larger download)'],['Efecto robot','Robot effect'],['Voz del sistema (respaldo)','System voice (fallback)'],['La voz TARS se descarga una sola vez (unos 60 MB; usa Wi-Fi) y después funciona sin internet.','The TARS voice downloads once (about 60 MB; use Wi-Fi) and then works offline.'],['Guardar','Save'],['También por voz: «TARS, abre Spotify».','Also by voice: “TARS, open Spotify”.']
+['Tu espacio personal','Your personal space'],['Buenos días, Alberto','Good morning, Alberto'],['Prototipo interactivo','Interactive prototype'],['＋ Nueva conversación','＋ New conversation'],['Concepto 02 / Glass','Concept 02 / Glass'],['Hablar conmigo','Talk to me'],['Escribir ↗','Type ↗'],['Interfaz local · IA pendiente','Local interface · AI pending'],['Activación por nombre ↗','Wake phrase ↗'],['A tu manera','Your way'],['Nombre del asistente','Assistant name'],['Humor','Humor'],['Sarcasmo','Sarcasm'],['Brevedad','Brevity'],['Confirmar acciones delicadas','Confirm sensitive actions'],['Ajustes guardados en este navegador.','Settings saved in this browser.'],['Así fluye tu asistente','Your assistant in flow'],['Visualización ilustrativa','Illustrative visualization'],['En sintonía','In sync'],['Voz · comprensión · respuesta','Voice · understanding · response'],['Todo empieza con tu voz.','It all starts with your voice.'],['El resto lo estamos construyendo.','We’re building the rest.'],['Voz','Voice'],['Comprensión','Understanding'],['Respuesta','Response'],['Sin datos de telemetría','No telemetry data'],['Un paso menos','One less step'],['Acciones rápidas','Quick actions'],['Abrir una aplicación','Open an app'],['Guardar una nota','Save a note'],['Temporizador de enfoque','Focus timer'],['Honestidad, siempre.','Honesty, always.'],['Si no sé algo, lo digo.','If I don’t know, I say so.'],['Si una acción falla, también.','If an action fails, likewise.'],['El sarcasmo es opcional.','Sarcasm is optional.'],['Inventar resultados, no.','Inventing results is not.'],['MI ESTADO ACTUAL','MY CURRENT STATUS'],['Mucho estilo.','Plenty of style.'],['Motor de IA aún por integrar.','AI engine not integrated yet.'],['También en tu muñeca','On your wrist, too'],['Vista previa','Preview'],['Una extensión','An extension'],['de tu asistente.','of your assistant.'],['Sin vincular','Not paired'],['Cascarón interactivo · Sin micrófono, nube ni control del dispositivo','Interactive shell · No microphone, cloud or device control'],['Conversación con','Conversation with'],['Respuestas de demostración','Demo responses'],['Este cascarón usa respuestas predefinidas. No tiene un modelo de IA conectado.','This shell uses predefined responses. No AI model is connected.'],['Tus notas','Your notes'],['＋ Crear nota','＋ Create note'],['Entendido','Got it'],['Una cosa menos en tu cabeza.','One less thing on your mind.'],['Guarda una nota en este navegador.','Save a note in this browser.'],['Cancelar','Cancel'],['Guardar nota','Save note'],['Nada por aquí. Una mente despejada o una nota pendiente.','Nothing here. A clear mind, or a note waiting to be written.'],['Leer capítulo','Read chapter'],['Buscar','Search'],['Biblia','Bible'],['66 libros · 1,189 capítulos · 31,102 versículos · Sin conexión','66 books · 1,189 chapters · 31,102 verses · Offline'],['Firme en lo esencial.','Grounded in what matters.'],['Inicio','Home'],['Conversación','Conversation'],['Mis notas','My notes'],['Personalidad','Personality'],['Alternar vista móvil','Toggle mobile preview'],['Cambiar idioma','Switch language'],['Cambiar tema','Switch theme'],['Mensaje','Message'],['Enviar mensaje','Send message'],['Cerrar','Close'],['Contenido de la nota','Note text'],['Lo que no quieres olvidar…','What you don’t want to forget…'],['Libro','Book'],['Capítulo','Chapter'],['Cerrar Biblia','Close Bible'],['Buscar en la Biblia','Search the Bible'],['Buscar una palabra o frase…','Search for a word or phrase…'],['Escribe algo. Mi paciencia viene incluida.','Type something. Patience is included.'],['Vista previa de voz en el reloj','Watch voice preview'],['AJUSTES POR VOZ','VOICE SETTINGS'],['Humor, sarcasmo, brevedad y honestidad se ajustan hablando: «TARS, baja tu humor a 60» · «TARS, modo consuelo» · «TARS, ¿cómo estás configurado?»','Humor, sarcasm, brevity and honesty are set by voice: “TARS, set humor to 60” · “TARS, comfort mode” · “TARS, how are you configured?”'],['⚙ Cerebro, voz y contactos','⚙ Brain, voice & contacts'],['Cerebro, voz y contactos','Brain, voice & contacts'],['Activar la escucha','Turn on listening'],['Ahora no','Not now'],['Permitir micrófono','Allow microphone'],['Modelo','Model'],['Variantes de la palabra de activación','Wake word variants'],['Contactos (llamadas y WhatsApp)','Contacts (calls & WhatsApp)'],['Una línea por contacto: Nombre = número.','One contact per line: Name = number.'],['Probar voz','Test voice'],['Cuenta y sincronización','Account & sync'],['Memoria de TARS','TARS memory'],['Diagnóstico y pruebas','Diagnostics & tests'],['Borrar memoria','Clear memory'],['Borrar conversación','Clear conversation'],['Actualizar','Refresh'],['Copiar reporte','Copy report'],['Probar velocidad','Speed test'],['Borrar modelo','Delete model'],['Entrar','Sign in'],['Crear cuenta','Create account'],['Olvidé mi contraseña','Forgot password'],['Contraseña (mínimo 6 caracteres)','Password (min. 6 characters)'],['⤓ Instalar app','⤓ Install app'],['Sin clave, o sin internet, funciono en modo local con comandos básicos. La clave se guarda solo en este teléfono y no se sube a la nube.','Without a key, or offline, I run in local mode with basic commands. The key stays on this phone and is never uploaded.'],['Motor de voz','Voice engine'],['Voz TARS · neural en el teléfono','TARS voice · neural, on device'],['Voz del sistema','System voice'],['Timbre','Timbre'],['Grave · español de México','Deep · Mexican Spanish'],['Nítido · español de México (alta calidad, descarga mayor)','Crisp · Mexican Spanish (high quality, larger download)'],['Efecto robot','Robot effect'],['Voz del sistema (respaldo)','System voice (fallback)'],['La voz TARS se descarga una sola vez (unos 60 MB; usa Wi-Fi) y después funciona sin internet.','The TARS voice downloads once (about 60 MB; use Wi-Fi) and then works offline.'],['Guardar','Save'],['También por voz: «TARS, abre Spotify».','Also by voice: “TARS, open Spotify”.']
 ];
 const esToEn=new Map(pairs),enToEs=new Map(pairs.map(([a,b])=>[b,a]));
 function translateStatic(){
@@ -256,15 +258,15 @@ function listenStatus(){
 idleVoice=function(){if(busy||ttsBusy)return;voiceStatus(listenStatus(),!window.TarsNative&&(!SR||location.protocol==='file:'));refreshDynamic()};
 
 function refreshDynamic(){
-  const brain=cfg.apiKey&&navigator.onLine?tr('Cerebro Claude','Claude brain'):tr('Modo local','Local mode');
+  const brain=brainSummary();
   const dot='<span class="dot'+(listening?'':' off')+'"></span> ';
   $('brainState').innerHTML=dot+(listening?tr('Escucha activa','Listening'):tr('En pausa','Paused'))+' · '+brain;
   $('topStatus').innerHTML=dot+(listening?tr('Escuchando «'+state.name+'»','Listening for “'+state.name+'”'):tr('Escucha en pausa','Listening paused'));
   $('wake').textContent=listening?tr('Pausar escucha ↗','Pause listening ↗'):tr('Reanudar escucha ↗','Resume listening ↗');
-  $('selfStatus').innerHTML=cfg.apiKey?tr('Cerebro conectado.<br>Voz siempre atenta.','Brain connected.<br>Always listening.'):tr('Modo local: comandos básicos.<br>Conecta mi cerebro para conversar.','Local mode: basic commands.<br>Connect my brain to talk freely.');
-  $('chatChip').textContent=cfg.apiKey&&navigator.onLine?'Claude · '+(cfg.model.includes('sonnet')?'Sonnet':'Haiku'):tr('Modo local','Local mode');
-  $('chatNote').textContent=cfg.apiKey?tr('Puedes escribir o hablar. Las respuestas se leen en voz alta.','Type or speak. Replies are read aloud.'):tr('Sin cerebro conectado entiendo comandos básicos: hora, temporizadores, notas, llamadas, mensajes, rutas y búsquedas.','Without a brain I understand basic commands: time, timers, notes, calls, messages, routes and searches.');
-  $('footNote').textContent=tr('Voz siempre activa · En línea con Firebase, local sin internet','Always-on voice · Online with Firebase, local when offline');
+  $('selfStatus').innerHTML=tr('Cerebro: ','Brain: ')+escapeHtml(brain)+'.<br>'+tr('Cada respuesta indica si fue local o en la nube.','Each reply shows whether it was local or cloud.');
+  $('chatChip').textContent=brain;
+  $('chatNote').textContent=tr('Las respuestas marcadas «NUBE · Gemini» usaron internet; «LOCAL · Gemma» se generaron en tu teléfono.','Replies marked “CLOUD · Gemini” used the internet; “LOCAL · Gemma” were generated on your phone.');
+  $('footNote').textContent=tr('Gemma 4 local · Gemini opcional en la nube · Firebase para sincronizar','Local Gemma 4 · optional Gemini cloud · Firebase sync');
   document.body.classList.toggle('is-attentive',awaiting);
 }
 
@@ -499,7 +501,7 @@ function appKey(name){const n=normT(name);if(/whats/.test(n))return 'whatsapp';i
 function openLink(url,label,delicate){
   if(url.startsWith('tel:'))return {url,label};
   if(delicate&&state.confirm)return {url,label};
-  if(window.TarsNative){try{TarsNative.openUrl(url);return {url,label,opened:true}}catch{}}
+  if(window.TarsNative){try{return {url,label,opened:!!TarsNative.openUrl(url)}}catch{}}
   let w=null;try{w=window.open(url,'_blank','noopener')}catch{}
   return {url,label,opened:!!w};
 }
@@ -535,51 +537,12 @@ function lookupVerse(v){
   return {ref:bibleDB[i][state.lang]+' '+c+':'+from+(last>from?'–'+last:''),text:ch.slice(from-1,last).join(' ')};
 }
 
-/* ---------- Cerebro: Claude ---------- */
-function systemPrompt(){
-  const es=state.lang!=='en';
-  const now=new Date().toLocaleString(es?'es-MX':'en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
-  const MODE={
-    work:'A la Obra: práctico y enfocado; aterriza objetivo, prioridades y el siguiente paso concreto.',
-    advice:'Consejo: aconseja con base en la Biblia. Incluye SIEMPRE el campo "verse" con una referencia real y pertinente (máximo 4 versículos). No escribas el texto del versículo: el sistema lo inserta desde la Reina-Valera. Libros válidos: '+bibleDB.map(b=>b.es).join(', ')+'.',
-    fight:'Pelea: debate firme; cuestiona ideas, pide evidencia, señala falacias, nunca ataques personales.',
-    comfort:'Consuelo: escucha cálida y paciente, sin sarcasmo ni presión. Si la persona expresa crisis o ideas de hacerse daño, anímala con calidez a hablar ya con alguien de confianza o con la Línea de la Vida (800 911 2000).'
-  }[state.mode];
-  return `Eres ${state.name}, el asistente de voz personal de Alberto, inspirado en un robot militar retirado: seco, directo, leal, con humor deadpan.
-Responde en ${es?'español de México':'English'}.
-Modo actual: ${MODE}
-Parámetros de personalidad (0-100): humor ${state.humor}, sarcasmo ${state.sarcasm}, brevedad ${state.brevity}, honestidad ${state.honesty}. Con honestidad baja puedes suavizar verdades con tacto, pero nunca inventes datos ni digas que hiciste algo que no hiciste.
-Si el usuario pide cambiar un parámetro o el modo, hazlo con la acción correspondiente y coméntalo en tu estilo. Si pregunta cómo estás configurado, dile los valores.
-Tus respuestas se leen en voz alta: frases cortas, sin emojis, sin markdown${Number(state.brevity)>60?', máximo 2 o 3 frases':''}.
-Fecha y hora local: ${now}. Contactos guardados: ${contacts().map(c=>c.name).join(', ')||'ninguno'}.
-Responde SIEMPRE solo con JSON válido, sin texto adicional:
-{"say":"lo que dirás","action":null,"verse":null}
-Acciones posibles para "action" (null si no aplica):
-{"type":"call","to":"nombre o número"} | {"type":"whatsapp","to":"nombre o número","text":"mensaje"} | {"type":"maps","query":"destino"} | {"type":"search","query":"búsqueda"} | {"type":"youtube","query":"búsqueda"} | {"type":"open_app","app":"whatsapp|maps|youtube|spotify|gmail|calendar|drive|github|phone"} | {"type":"timer","seconds":300,"label":"etiqueta"} | {"type":"note","text":"contenido de la nota"} | {"type":"set_mode","mode":"work|advice|fight|comfort"} | {"type":"set_humor","value":60} | {"type":"set_sarcasm","value":40} | {"type":"set_brevity","value":80} | {"type":"set_honesty","value":90} | {"type":"pause_listening"} | {"type":"url","url":"https://..."}
-"verse" (solo si citas la Biblia): {"book":"Filipenses","chapter":4,"from":6,"to":7}
-No tienes internet en tiempo real: para clima, noticias o datos actuales usa la acción "search". Si algo no se puede hacer desde el teléfono, dilo con honestidad. Tu humor es original: no cites diálogos de películas.`;
-}
-function chatHistory(){
-  const out=[];
-  state.messages.slice(-17).forEach(m=>{const role=m.role==='user'?'user':'assistant';const text=String(m.text||'');if(!text)return;if(out.length&&out[out.length-1].role===role)out[out.length-1].content+='\n'+text;else out.push({role,content:text})});
-  while(out.length&&out[0].role!=='user')out.shift();
-  return out;
-}
+/* ---------- Respuestas del modelo ---------- */
 function parseReply(text){
   const s=text.indexOf('{'),e=text.lastIndexOf('}');
-  if(s>=0&&e>s){try{const j=JSON.parse(text.slice(s,e+1));if(typeof j.say==='string')return {say:j.say,action:j.action||null,verse:j.verse||null}}catch{}}
+  if(s>=0&&e>s){try{const j=JSON.parse(text.slice(s,e+1));if(typeof j.say==='string')return {say:j.say,action:j.action||null,verse:j.verse||null,needs_cloud:j.needs_cloud===true}}catch{}}
   return {say:text.replace(/[*#_`]/g,'').trim(),action:null,verse:null};
 }
-async function askClaude(){
-  const ctrl=new AbortController(),to=setTimeout(()=>ctrl.abort(),20000);let r;
-  try{
-    r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',signal:ctrl.signal,headers:{'content-type':'application/json','x-api-key':cfg.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:cfg.model,max_tokens:500,system:systemPrompt(),messages:chatHistory()})});
-  }finally{clearTimeout(to)}
-  if(!r.ok){let d='';try{const j=await r.json();d=j.error&&j.error.message||''}catch{}throw new Error('HTTP '+r.status+(d?' · '+d:''))}
-  const data=await r.json();
-  return parseReply((data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join(''));
-}
-
 /* ---------- Cerebro: modo local ---------- */
 const NUMW={un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,once:11,doce:12,quince:15,veinte:20,treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100,cero:0};
 const toNum=w=>/^\d+$/.test(w)?Number(w):(w in NUMW?NUMW[w]:null);
@@ -604,14 +567,268 @@ function localBrain(cmd){
   if((m=cmd.match(/(?:abre|abrir|open)\s+(?:la app de |la aplicaci[oó]n de |el |la )?(.+)/i))&&appKey(m[1]))return {say:'Abriendo '+APPS[appKey(m[1])][0]+'.',action:{type:'open_app',app:m[1]}};
   if((m=cmd.match(/(?:pon|reproduce)\s+(.+?)(?:\s+en youtube)?$/i)))return {say:'Buscando '+m[1]+' en YouTube.',action:{type:'youtube',query:m[1]}};
   if((m=cmd.match(/(?:busca|buscar|investiga|googlea)\s+(.+)/i)))return {say:w?'Buscando. Intenta no distraerte con los anuncios.':'Buscando.',action:{type:'search',query:m[1]}};
-  if(/(quien eres|presentate|que eres)/.test(n))return {say:'Soy '+state.name+', tu asistente. Modo '+modes[state.mode].es+'. '+(w?'Sin cerebro conectado, soy básicamente un llavero con buena voz.':'Estoy en modo local.')};
+  if(/^(quien eres|presentate|que eres)/.test(n))return {say:'Soy '+state.name+', tu asistente. Modo '+modes[state.mode].es+'. '+(w?'Cerebro: '+brainSummary()+'. Personalidad: incluida sin costo extra.':'Cerebro: '+brainSummary()+'.')};
   if(/^(hola|buenos dias|buenas tardes|buenas noches|que tal)/.test(n))return {say:w?'Hola, Alberto. Sistemas en línea. Ánimo, opcional.':'Hola, Alberto. ¿En qué te ayudo?'};
   if(/gracias/.test(n))return {say:w?'De nada. Lo anoto en mi evaluación de desempeño.':'Para eso estoy.'};
-  if(state.mode==='advice')return {say:biblicalCounsel(cmd)};
-  if(state.mode==='comfort')return {say:tr('Podemos ir despacio. No tienes que resolverlo todo hoy. Si quieres, empieza por decir qué es lo que más te pesa en este momento.','We can take this slowly. You don’t have to solve everything today. If you wish, start with what feels heaviest right now.')};
-  if(state.mode==='fight')return {say:tr('Vamos a poner la idea a prueba: ¿qué evidencia la sostiene, qué la contradice y qué te haría cambiar de opinión?','Let’s test the idea: what evidence supports it, what contradicts it, and what would change your mind?')};
-  return {say:tr('En modo local entiendo hora, temporizadores, notas, llamadas, mensajes, rutas, búsquedas y cambios de modo. Conecta mi cerebro para todo lo demás.','In local mode I understand time, timers, notes, calls, messages, routes, searches and mode changes. Connect my brain for everything else.')};
+  return null;
 }
+/* =====================================================================
+   Cerebro de TARS: reglas → Gemma 4 local (sin internet) → Gemini Flash (nube, opcional)
+   La IA interpreta; las funciones de abajo ejecutan y comprueban las acciones.
+   ===================================================================== */
+delete cfg.apiKey; // ya no se guardan claves privadas en la app
+if(!cfg.cloud)cfg.cloud='auto';               // auto | never | always
+if(!Number.isFinite(Number(cfg.cloudDaily)))cfg.cloudDaily=40;
+if(!cfg.cloudUse||typeof cfg.cloudUse!=='object')cfg.cloudUse={date:'',count:0};
+if(typeof cfg.appCheckKey!=='string')cfg.appCheckKey='';
+if(!Array.isArray(state.memory))state.memory=[];
+if(typeof state.syncHistory!=='boolean')state.syncHistory=true;
+const escapeHtml=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const memId=()=>'m'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const ENGINE_LABEL={reglas:tr('REGLAS','RULES'),local:'LOCAL · Gemma',nube:tr('NUBE · Gemini','CLOUD · Gemini'),basico:tr('BÁSICO','BASIC')};
+
+/* ---------- Memoria útil ---------- */
+function memoryAdd(text){text=String(text||'').trim().replace(/[.。]+$/,'');if(!text)return false;
+  if(state.memory.some(m=>normT(m.text)===normT(text)))return true;
+  state.memory.unshift({id:memId(),text,date:new Date().toISOString()});state.memory=state.memory.slice(0,80);save();renderMemory();return true}
+function memoryForget(q){const k=normT(q);const before=state.memory.length;state.memory=state.memory.filter(m=>!normT(m.text).includes(k));save();renderMemory();return before-state.memory.length}
+function memoryClear(){state.memory=[];save();renderMemory()}
+function renderMemory(){const box=$('memList');if(!box)return;box.replaceChildren();
+  if(!state.memory.length){const p=document.createElement('p');p.className='hint';p.textContent=tr('Sin recuerdos guardados. Di «TARS, recuerda que…».','Nothing saved yet. Say “TARS, remember that…”.');box.append(p);return}
+  state.memory.forEach(m=>{const row=document.createElement('div');row.className='mem-row';const t=document.createElement('span');t.textContent=m.text;const x=document.createElement('button');x.type='button';x.className='timer-x';x.textContent='×';x.title=tr('Olvidar','Forget');x.onclick=()=>{state.memory=state.memory.filter(z=>z.id!==m.id);save();renderMemory()};row.append(t,x);box.append(row)})}
+function contextBlock(){
+  const mem=state.memory.slice(0,15).map(m=>'- '+m.text).join('\n')||'- (nada guardado)';
+  const notes=state.notes.slice(0,8).map(n=>'- '+String(n.text).slice(0,140)).join('\n')||'- (sin notas)';
+  return 'Lo que sabes de Alberto (memoria):\n'+mem+'\nSus notas recientes:\n'+notes;
+}
+function recentTurns(max=8){
+  return state.messages.slice(-(max+1),-1).map(m=>(m.role==='user'?'Alberto: ':state.name+': ')+String(m.text||'').slice(0,400)).join('\n');
+}
+
+/* ---------- Modos aplicados al modelo ---------- */
+const MODE_RULES={
+  work:'A LA OBRA. Ve al grano. Estructura: (1) el objetivo en una frase, (2) máximo 3 pasos concretos, (3) el siguiente paso que Alberto puede hacer hoy. Nada de motivación vacía.',
+  advice:'CONSEJO BÍBLICO. Elige UNO de los pasajes candidatos que se te dan (no inventes otros). Explica en 2-3 frases qué dice el pasaje en su contexto (quién habla, a quién y por qué) y cómo aplica a la situación de Alberto. Devuelve la referencia exacta en "verse". No escribas el texto del versículo: el sistema lo cita textual.',
+  fight:'PELEA (debate). Toma la postura contraria con respeto: presenta el argumento más fuerte en contra, señala supuestos o falacias, pide evidencia concreta y termina con UNA pregunta difícil. Firme con las ideas, nunca con la persona.',
+  comfort:'CONSUELO. Primero valida lo que siente, con calidez y sin prisa. Cero sarcasmo, cero bromas, sin soluciones rápidas ni sermones. Cierra con una pregunta abierta y suave. Si hay señales de que pueda hacerse daño, anímalo con cariño a hablar ya con alguien de confianza o con la Línea de la Vida (800 911 2000).'
+};
+function personaBlock(cloud){
+  const es=state.lang!=='en';
+  const comfort=state.mode==='comfort';
+  const now=new Date().toLocaleString(es?'es-MX':'en-US',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+  return `Eres ${state.name}, el asistente de voz personal de Alberto: robot militar retirado, seco, directo y leal, con humor deadpan original.
+Idioma: ${es?'español de México':'English'}. Fecha y hora: ${now}.
+MODO ACTUAL: ${MODE_RULES[state.mode]}
+Personalidad (0-100): humor ${comfort?5:state.humor}, sarcasmo ${comfort?0:state.sarcasm}, brevedad ${state.brevity}, honestidad ${state.honesty}.
+Reglas: tus respuestas se leen en voz alta (frases cortas, sin emojis ni markdown${Number(state.brevity)>60?', máximo 3 frases':''}). Nunca inventes datos. Tú NO ejecutas acciones: solo propones una en "action" y el sistema la ejecuta y comprueba. No digas que ya la hiciste.${cloud?' Tienes búsqueda de Google: úsala para datos actuales y cita lo que encuentres.':' No tienes internet: si te piden datos actuales (clima, noticias, precios) pon "needs_cloud": true y explica que lo puedes buscar cuando haya conexión.'}
+Si Alberto te pide recordar algo de forma permanente, usa la acción "remember".`;
+}
+const ACTIONS_DOC='Acciones (o null): {"type":"note","text":"..."} | {"type":"remember","text":"..."} | {"type":"timer","seconds":300,"label":"..."} | {"type":"call","to":"contacto"} | {"type":"whatsapp","to":"contacto","text":"..."} | {"type":"maps","query":"..."} | {"type":"search","query":"..."} | {"type":"youtube","query":"..."} | {"type":"open_app","app":"whatsapp|maps|youtube|spotify|gmail|calendar|drive|github|phone"} | {"type":"set_mode","mode":"work|advice|fight|comfort"} | {"type":"set_humor","value":60} | {"type":"set_sarcasm","value":40} | {"type":"set_brevity","value":80} | {"type":"set_honesty","value":90}';
+function buildPrompt(cmd,opts={}){
+  const bible=state.mode==='advice'?bibleCandidates(cmd):[];
+  opts.bible=bible;
+  const parts=[personaBlock(false),contextBlock(),'Contactos: '+(contacts().map(c=>c.name).join(', ')||'ninguno')];
+  if(bible.length)parts.push('Pasajes candidatos (Reina-Valera, elige uno):\n'+bible.map((b,i)=>`[${i+1}] ${b.ref}: "${b.text}"\n    Contexto: ${b.context}`).join('\n'));
+  const turns=recentTurns();if(turns)parts.push('Conversación reciente:\n'+turns);
+  parts.push('Alberto: '+cmd);
+  parts.push('Responde SOLO con un objeto JSON válido en una línea:\n{"say":"lo que dirás","action":null,"verse":null,"needs_cloud":false}\n'+ACTIONS_DOC+(bible.length?'\n"verse": {"book":"Libro","chapter":N,"from":N,"to":N} tomado de los candidatos.':''));
+  return parts.join('\n\n');
+}
+
+/* ---------- Biblia: búsqueda local, contexto y verificación ---------- */
+const BIBLE_STOP=new Set('el la los las un una unos unas de del al a y e o u que en por para con sin mi mis me te se lo le les su sus es son fue ser estar estoy esta este esto eso esa como cuando donde porque pero muy mas ya no si yo tu ella nos hay tengo tiene hacer quiero puedo debo siento algo nada todo tan sobre entre hasta desde cual quien estoy estas siempre nunca cosa cosas tambien solo'.split(' '));
+// Tema → palabras de búsqueda y pasajes de referencia conocidos (el texto siempre sale de la Biblia local)
+const BIBLE_TOPICS=[
+  [/ansied|preocup|estres|nervio|angust|agobi/, ['afan','congoja','paz','cuidado','descans'], ['Filipenses 4:6-7','Mateo 6:34','1 Pedro 5:7','Salmos 55:22']],
+  [/miedo|temor|asust|insegur/, ['temas','temor','esfuerz','valiente','confia'], ['Isaías 41:10','Josué 1:9','Salmos 56:3']],
+  [/triste|depres|dolor|duelo|perd[ií]|llor/, ['quebrantado','consol','lagrima','llanto','enjugar'], ['Salmos 34:18','Mateo 5:4','Salmos 147:3']],
+  [/enoj|ira|coraje|rabia|pleito|pelea|conflict/, ['ira','enoj','blanda','furor','paciencia'], ['Proverbios 15:1','Santiago 1:19-20','Efesios 4:26']],
+  [/perdon|rencor|resent|traici/, ['perdon','perdona','misericord','ofensa'], ['Efesios 4:32','Colosenses 3:13','Mateo 6:14']],
+  [/decisi|elegir|sabidur|consejo|duda|rumbo/, ['sabiduria','consejo','prudencia','camino','endereza'], ['Santiago 1:5','Proverbios 3:5-6','Salmos 32:8']],
+  [/trabaj|dinero|deuda|negocio|empleo|jefe|finanz/, ['trabaj','diligente','riquezas','mano'], ['Colosenses 3:23','Proverbios 16:3','Proverbios 12:24']],
+  [/famil|hijo|esposa|espos|pareja|matrimon|padre|madre/, ['hijos','mujer','marido','amor','instruye','honra'], ['1 Corintios 13:4-7','Efesios 6:4','Proverbios 22:6']],
+  [/cansad|agotad|sin fuerza|fatig/, ['cansados','descanso','fuerzas','aguila','trabajados'], ['Mateo 11:28','Isaías 40:31','Gálatas 6:9']],
+  [/sol[oa]\b|soledad|abandon/, ['desampar','dejare','conmigo'], ['Deuteronomio 31:6','Hebreos 13:5','Salmos 27:10']],
+  [/culpa|fracas|error|fall[eé]/, ['misericordia','levanta','caido','perdon','limpia'], ['1 Juan 1:9','Romanos 8:1','Salmos 51:10']],
+  [/gratitud|agradec|gracias/, ['gracias','alaba','bendice'], ['1 Tesalonicenses 5:18','Salmos 100:4']],
+  [/orgull|soberbi|humild/, ['soberbia','humild','altivez'], ['Proverbios 16:18','Santiago 4:6']],
+  [/paciencia|esperar|espera/, ['espera','paciencia','aguardar'], ['Romanos 12:12','Salmos 37:7']]
+];
+function parseRef(ref){const m=String(ref).match(/^(.+?)\s+(\d+):(\d+)(?:-(\d+))?$/);if(!m)return null;const key=normalizeBible(m[1]).trim();const b=bibleDB.findIndex(x=>normalizeBible(x.es)===key);if(b<0)return null;const c=+m[2],v=+m[3],to=m[4]?+m[4]:v;const ch=bibleDB[b].chapters[c-1];if(!ch||!ch[v-1])return null;return {b,c,v,to:Math.min(to,ch.length)}}
+function candidateFrom(b,c,v,to){const ch=bibleDB[b].chapters[c-1];const prev=ch[v-2]?String(ch[v-2]).slice(0,160):'';const next=ch[(to||v)]?String(ch[(to||v)]).slice(0,160):'';
+  return {b,c,v,to:to||v,ref:bibleDB[b].es+' '+c+':'+v+((to||v)>v?'-'+to:''),text:ch.slice(v-1,to||v).join(' '),context:(prev?'antes: "'+prev+'" ':'')+(next?'después: "'+next+'"':'')||'(sin contexto adyacente)'}}
+function bibleCandidates(text,k=4){
+  const t=normalizeBible(text);
+  const topics=BIBLE_TOPICS.filter(([re])=>re.test(t));
+  const out=[],seen=new Set();
+  const push=c=>{const key=c.b+':'+c.c+':'+c.v;if(seen.has(key)||out.length>=k)return;seen.add(key);out.push(c)};
+  topics.forEach(([, ,anchors])=>anchors.slice(0,2).forEach(r=>{const p=parseRef(r);if(p)push(candidateFrom(p.b,p.c,p.v,p.to))}));
+  const words=t.replace(/[^a-zñ0-9 ]/g,' ').split(/\s+/).filter(w=>w.length>3&&!BIBLE_STOP.has(w)).map(w=>w.slice(0,6));
+  const topicTerms=topics.flatMap(x=>x[1]);
+  const terms=[...new Set([...topicTerms,...words])];
+  if(terms.length&&out.length<k){
+    const scored=[];
+    for(const v of bibleIndex){let s=0;for(const term of terms){if(v.key.includes(term))s+=topicTerms.includes(term)?2:1}
+      if(s>1){if(v.b===18||v.b===19||v.b>=39)s+=0.3;scored.push([s,v])}}
+    scored.sort((a,b)=>b[0]-a[0]);
+    for(const [,v] of scored){if(out.length>=k)break;push(candidateFrom(v.b,v.c+1,v.v+1,v.v+1))}
+  }
+  if(!out.length)['Proverbios 3:5-6','Salmos 46:1'].forEach(r=>{const p=parseRef(r);if(p)push(candidateFrom(p.b,p.c,p.v,p.to))});
+  return out;
+}
+/* Acepta la cita del modelo solo si coincide con un candidato; si no, usa el mejor candidato. */
+function verifyVerse(v,candidates){
+  if(!candidates||!candidates.length)return {verse:lookupVerse(v),checked:!!lookupVerse(v),replaced:false};
+  const key=v&&v.book?normalizeBible(String(v.book)).trim():'';
+  const hit=candidates.find(c=>normalizeBible(bibleDB[c.b].es)===key&&Number(v.chapter)===c.c&&Number(v.from||v.verse)>=c.v-1&&Number(v.from||v.verse)<=(c.to||c.v)+1);
+  const pick=hit||candidates[0];
+  const from=hit?Number(v.from||v.verse):pick.v,to=hit?Math.max(Number(v.to||from),from):(pick.to||pick.v);
+  return {verse:lookupVerse({book:bibleDB[pick.b].es,chapter:pick.c,from,to:Math.min(to,from+3)}),checked:true,replaced:!hit};
+}
+function adviceFallback(cmd){
+  const c=bibleCandidates(cmd,1)[0];
+  if(!c)return {say:biblicalCounsel(cmd)};
+  return {say:tr('Un pasaje para tu situación. Léelo con calma y considera su contexto en el capítulo completo.','A passage for your situation. Read it calmly and consider its context in the full chapter.'),verse:{book:bibleDB[c.b].es,chapter:c.c,from:c.v,to:c.v},_bible:[c]};
+}
+
+/* ---------- Cerebro local: Gemma 4 E2B en el teléfono ---------- */
+const llmPending=new Map();
+function llmStatus(){try{return window.TarsNative&&TarsNative.llmStatus?JSON.parse(TarsNative.llmStatus()):{state:'unavailable'}}catch{return {state:'unavailable'}}}
+function localReady(){return ['downloaded','loading','ready'].includes(llmStatus().state)}
+function askGemma(cmd,opts){
+  const prompt=buildPrompt(cmd,opts);
+  return new Promise((resolve,reject)=>{
+    const id='q'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+    const t=setTimeout(()=>{llmPending.delete(id);reject(new Error(tr('el modelo local tardó demasiado','the local model took too long')))},120000);
+    llmPending.set(id,{resolve:r=>{clearTimeout(t);resolve(r)},reject:e=>{clearTimeout(t);reject(e)}});
+    try{TarsNative.llmAsk(id,prompt)}catch(e){clearTimeout(t);llmPending.delete(id);reject(e)}
+  }).then(ev=>{const r=parseReply(ev.text||'');r.engine='local';r.meta={ms:ev.ms,backend:ev.backend,tps:ev.tokPerSec};return r});
+}
+function onLlmEvent(ev){
+  if(ev.type==='llm'){const p=llmPending.get(ev.id);if(!p)return;llmPending.delete(ev.id);if(ev.ok)p.resolve(ev);else p.reject(new Error(ev.error||'error'));return}
+  if(ev.type==='llm_progress'){const el=$('llmState');if(el)el.textContent=tr('Descargando Gemma 4 E2B… ','Downloading Gemma 4 E2B… ')+ev.pct+'% ('+ev.mb+' MB)';return}
+  if(ev.type==='llm_status'){renderLlm();if(ev.error)toast(ev.error);else if(ev.state==='downloaded')toast(tr('Gemma 4 listo: ya converso sin internet.','Gemma 4 ready: I can chat offline.'));refreshDynamic()}
+}
+
+/* ---------- Nube opcional: Gemini Flash vía Firebase AI Logic (sin claves en la app) ---------- */
+const CLOUD_MODELS=['gemini-flash-latest','gemini-3-flash-preview','gemini-2.5-flash'];
+function cloudUsedToday(){const d=new Date().toISOString().slice(0,10);if(cfg.cloudUse.date!==d)cfg.cloudUse={date:d,count:0};return cfg.cloudUse.count}
+function cloudAllowed(){return navigator.onLine&&cfg.cloud!=='never'&&cloudUsedToday()<Number(cfg.cloudDaily)}
+const COMPLEX_RE=/(clima|noticia|hoy en|actual|precio|cotiza|tipo de cambio|dolar|resultado|marcador|quien gano|ultim[oa]s?|investiga|compara|analiza|redacta|resume|explica a fondo|usa la nube|en internet|busca en google|cuando abre|horario)/;
+function wantsCloud(cmd){return cfg.cloud==='always'||(cfg.cloud==='auto'&&(COMPLEX_RE.test(normT(cmd))||cmd.length>220))}
+async function geminiReady(){
+  if(!(await syncInit())||!sync.app)throw new Error(tr('Firebase no disponible','Firebase unavailable'));
+  if(!sync.ai){
+    const ai=await import(FB+'firebase-ai.js');
+    if(cfg.appCheckKey&&!sync.appCheck){const ac=await import(FB+'firebase-app-check.js');sync.appCheck=ac.initializeAppCheck(sync.app,{provider:new ac.ReCaptchaEnterpriseProvider(cfg.appCheckKey),isTokenAutoRefreshEnabled:true})}
+    sync.aiMod=ai;sync.ai=ai.getAI(sync.app,{backend:new ai.GoogleAIBackend()});
+  }
+  return sync.ai;
+}
+function geminiHistory(){
+  const out=[];state.messages.slice(-10).forEach(m=>{const role=m.role==='user'?'user':'model';const text=String(m.text||'');if(!text)return;if(out.length&&out[out.length-1].role===role)out[out.length-1].parts[0].text+='\n'+text;else out.push({role,parts:[{text}]})});
+  while(out.length&&out[0].role!=='user')out.shift();return out;
+}
+async function askGemini(cmd,opts={}){
+  if(!cloudAllowed())throw new Error(cfg.cloud==='never'?tr('nube desactivada','cloud disabled'):(!navigator.onLine?tr('sin internet','offline'):tr('límite diario de la nube alcanzado','daily cloud limit reached')));
+  const ai=await geminiReady();
+  const bible=state.mode==='advice'?bibleCandidates(cmd):[];opts.bible=bible;
+  const sys=personaBlock(true)+'\n\n'+contextBlock()+(bible.length?'\n\nPasajes candidatos (Reina-Valera, elige uno):\n'+bible.map((b,i)=>`[${i+1}] ${b.ref}: "${b.text}" Contexto: ${b.context}`).join('\n'):'')+'\n\nResponde SOLO con JSON en una línea: {"say":"...","action":null,"verse":null}\n'+ACTIONS_DOC;
+  const models=[...new Set([cfg.cloudModel,...CLOUD_MODELS].filter(Boolean))];
+  let last;
+  for(const name of models){
+    try{
+      const model=sync.aiMod.getGenerativeModel(ai,{model:name,systemInstruction:sys,tools:[{googleSearch:{}}]});
+      const res=await Promise.race([model.generateContent({contents:geminiHistory()}),new Promise((_,rej)=>setTimeout(()=>rej(new Error(tr('la nube tardó demasiado','the cloud took too long'))),30000))]);
+      cfg.cloudModel=name;cfg.cloudUse.count=cloudUsedToday()+1;try{localStorage.setItem(CFG_KEY,JSON.stringify(cfg))}catch{}
+      const r=parseReply(res.response.text());r.engine='nube';r.meta={model:name};
+      const gm=res.response.candidates&&res.response.candidates[0]&&res.response.candidates[0].groundingMetadata;
+      r.sources=((gm&&gm.groundingChunks)||[]).map(c=>c.web).filter(w=>w&&w.uri).slice(0,3).map(w=>({url:w.uri,title:w.title||w.uri}));
+      return r;
+    }catch(e){last=e;if(!/not.?found|404|unsupported|no longer|is not available/i.test(String(e&&e.message)))break}
+  }
+  const msg=String(last&&last.message||last);
+  if(/app.?check|unauthenticated|401|403|permission/i.test(msg))throw new Error(tr('la nube rechazó la petición (revisa Firebase AI Logic y App Check)','the cloud rejected the request (check Firebase AI Logic and App Check)'));
+  throw last;
+}
+
+/* ---------- Enrutador ---------- */
+function commandParser(cmd){
+  const n=normT(cmd);let m;
+  if((m=cmd.match(/^(?:recuerda|acu[eé]rdate|no olvides|ten en cuenta)(?: de)?(?: que)?[:,]?\s+(.+)/i)))return {say:tr('Lo recordaré: ','I’ll remember: ')+m[1].replace(/[.]+$/,'')+'.',action:{type:'remember',text:m[1]}};
+  if(/(que recuerdas|que sabes de mi|que tienes en (tu )?memoria|tu memoria)/.test(n)&&!/borra|olvida/.test(n)){
+    const items=state.memory.slice(0,5).map(x=>x.text);
+    return {say:items.length?tr('Recuerdo esto: ','I remember: ')+items.join('; ')+'.'+(state.memory.length>5?tr(' Y '+(state.memory.length-5)+' cosas más en Ajustes.',' And '+(state.memory.length-5)+' more in Settings.'):''):tr('Aún no tengo nada guardado. Di «recuerda que…».','Nothing saved yet. Say “remember that…”.')};
+  }
+  if(/(borra|olvida|limpia) (toda )?(tu memoria|todo lo que recuerdas|lo que sabes de mi)/.test(n))return {say:tr('Memoria borrada. Empiezo de cero.','Memory cleared.'),action:{type:'forget_all'}};
+  if((m=cmd.match(/^(?:olvida|borra de tu memoria)(?: que)?\s+(.+)/i)))return {say:'',action:{type:'forget',text:m[1]}};
+  if(/(borra|limpia) (la )?conversacion/.test(n))return {say:tr('Conversación borrada.','Conversation cleared.'),action:{type:'clear_chat'}};
+  const r=localBrain(cmd);
+  return r;
+}
+async function brainReply(cmd,opts){
+  const det=commandParser(cmd);
+  if(det){
+    if(det.action&&det.action.type==='search'&&cloudAllowed()&&cfg.cloud!=='never'){try{return await askGemini(cmd,opts)}catch(e){det.note=e.message}}
+    det.engine='reglas';return det;
+  }
+  let note='';
+  if(wantsCloud(cmd)&&cloudAllowed()){try{return await askGemini(cmd,opts)}catch(e){note=tr('Nube no disponible: ','Cloud unavailable: ')+e.message}}
+  if(localReady()){
+    try{const r=await askGemma(cmd,opts);
+      if(r.needs_cloud&&cfg.cloud!=='never'&&cloudAllowed()){try{const c=await askGemini(cmd,opts);c.note=tr('Gemma pidió ayuda a la nube para esto.','Gemma asked the cloud for help.');return c}catch(e){r.note=tr('Necesitaba la nube, pero: ','Needed the cloud, but: ')+e.message}}
+      if(note)r.note=note;return r}
+    catch(e){note=(note?note+' · ':'')+tr('Modelo local: ','Local model: ')+e.message}
+  }
+  if(!note&&cfg.cloud!=='never'&&cloudAllowed()){try{return await askGemini(cmd,opts)}catch(e){note=tr('Nube no disponible: ','Cloud unavailable: ')+e.message}}
+  const fb=fallbackBrain(cmd);fb.engine='basico';fb.note=note||(window.TarsNative?tr('Descarga Gemma 4 en Ajustes para conversar sin internet.','Download Gemma 4 in Settings to chat offline.'):'');
+  return fb;
+}
+function fallbackBrain(cmd){
+  if(state.mode==='advice')return adviceFallback(cmd);
+  if(state.mode==='comfort')return {say:tr('Aquí estoy. No tienes que resolverlo todo hoy. ¿Qué es lo que más te pesa en este momento?','I’m here. You don’t have to solve everything today. What weighs on you most right now?')};
+  if(state.mode==='fight')return {say:tr('Pongamos esa idea a prueba: ¿qué evidencia la sostiene, qué la contradice y qué te haría cambiar de opinión?','Let’s test that idea: what supports it, what contradicts it, and what would change your mind?')};
+  return {say:tr('Sin modelo de lenguaje disponible entiendo comandos: hora, notas, memoria, temporizadores, llamadas, mensajes, rutas, apps y modos.','Without a language model I understand commands: time, notes, memory, timers, calls, messages, routes, apps and modes.')};
+}
+
+/* ---------- Ejecución separada y comprobada ---------- */
+const ACTION_TYPES=new Set(['call','whatsapp','maps','search','youtube','open_app','url','timer','note','remember','forget','forget_all','clear_chat','set_mode','set_humor','set_sarcasm','set_brevity','set_honesty','pause_listening']);
+function validateAction(a){
+  if(!a||typeof a!=='object'||!a.type)return null;
+  if(!ACTION_TYPES.has(a.type))return {invalid:tr('Acción no permitida: ','Action not allowed: ')+a.type};
+  const s=v=>String(v==null?'':v).slice(0,500);
+  const c={type:a.type};
+  if('to'in a)c.to=s(a.to);if('text'in a)c.text=s(a.text);if('query'in a)c.query=s(a.query);if('app'in a)c.app=s(a.app);if('label'in a)c.label=s(a.label).slice(0,40);if('mode'in a)c.mode=s(a.mode);if('url'in a)c.url=s(a.url);
+  if('seconds'in a)c.seconds=Number(a.seconds);if('value'in a)c.value=Number(a.value);
+  if(c.type==='timer'&&!(c.seconds>=1&&c.seconds<=86400))return {invalid:tr('Duración de temporizador no válida.','Invalid timer duration.')};
+  if(/^set_(humor|sarcasm|brevity|honesty)$/.test(c.type)&&!(c.value>=0&&c.value<=100))return {invalid:tr('Valor fuera de rango (0-100).','Value out of range (0-100).')};
+  if(c.type==='set_mode'&&!modes[c.mode])return {invalid:tr('Modo desconocido.','Unknown mode.')};
+  if(['note','remember'].includes(c.type)&&!c.text.trim())return {invalid:tr('La nota está vacía.','The note is empty.')};
+  return c;
+}
+/* Ejecuta la acción y devuelve qué pasó realmente: {ok, status, url?, label?, self?, error?} */
+function executeAction(raw){
+  const a=validateAction(raw);if(!a)return null;if(a.invalid)return {ok:false,error:a.invalid,status:'⚠ '+a.invalid};
+  if(a.type==='remember'){const ok=memoryAdd(a.text);return {ok,status:ok?'✓ '+tr('Guardado en memoria','Saved to memory'):'⚠ '+tr('No se guardó','Not saved')}}
+  if(a.type==='forget'){const n=memoryForget(a.text);return {ok:n>0,status:n>0?'✓ '+tr('Olvidé '+n+' recuerdo(s)','Forgot '+n+' item(s)'):'⚠ '+tr('No encontré eso en mi memoria','Not found in memory'),say:n>0?tr('Listo, lo olvidé.','Done, forgotten.'):tr('No tenía eso guardado.','I didn’t have that saved.')}}
+  if(a.type==='forget_all'){memoryClear();return {ok:state.memory.length===0,status:'✓ '+tr('Memoria vacía','Memory empty')}}
+  if(a.type==='clear_chat'){state.messages=[];save();return {ok:true,status:'✓ '+tr('Conversación borrada','Conversation cleared'),cleared:true}}
+  const before={notes:state.notes.length,timers:vTimers.length};
+  const out=runAction(a)||{};
+  if(out.error)return {ok:false,error:out.error,status:'⚠ '+out.error};
+  if(a.type==='note'){const ok=state.notes.length===before.notes+1&&state.notes[0].text===a.text.trim();return {ok,status:ok?'✓ '+tr('Nota guardada','Note saved')+(sync.user?tr(' · se sincroniza',' · syncing'):''):'⚠ '+tr('La nota no se guardó','Note not saved')}}
+  if(a.type==='timer'){const ok=vTimers.length===before.timers+1;return {ok,status:ok?'✓ '+tr('Temporizador activo','Timer running'):'⚠ '+tr('No se creó el temporizador','Timer not created')}}
+  if(a.type==='set_mode')return {ok:state.mode===a.mode,status:'✓ '+tr('Modo ','Mode ')+modes[state.mode][state.lang]};
+  if(/^set_/.test(a.type)){const k=a.type.slice(4);return {ok:Number(state[k])===Math.round(a.value),status:'✓ '+PARAMS[k][state.lang==='en'?1:0]+' '+state[k]+'%'}}
+  if(a.type==='pause_listening')return {ok:true,status:'✓ '+tr('Escucha en pausa','Listening paused')};
+  if(out.url){
+    if(out.opened===true)return {ok:true,...out,status:'✓ '+tr('Abierto: ','Opened: ')+out.label.replace(/^\S+\s/,'')};
+    if(out.opened===false)return {ok:false,...out,status:'⚠ '+tr('No se pudo abrir; toca el botón','Could not open; tap the button')};
+    return {ok:null,...out,status:'⏸ '+tr('Pendiente de tu confirmación','Waiting for your confirmation')};
+  }
+  return {ok:true,status:''};
+}
+
 
 /* ---------- Ciclo principal ---------- */
 function showActionSlot(link){
@@ -627,33 +844,45 @@ async function processCommand(cmd,opts={}){
   busy=true;endAwait();stopRec();if(currentFinish)currentFinish();
   document.body.classList.add('is-thinking');voiceStatus(tr('Procesando…','Thinking…'));
   state.messages.push({role:'user',text:cmd});renderChat();
-  let res,note='';
-  try{res=cfg.apiKey&&navigator.onLine?await askClaude():localBrain(cmd)}
-  catch(err){note=tr('Sin conexión con el cerebro','Brain unreachable')+' ('+(err.name==='AbortError'?tr('tiempo agotado','timeout'):err.message)+'). '+tr('Respondo en modo local.','Answering in local mode.');res=localBrain(cmd)}
-  const out=runAction(res.action);
+  let res;
+  try{res=await brainReply(cmd,opts)}catch(err){res=fallbackBrain(cmd);res.engine='basico';res.note=String(err&&err.message||err)}
+  const exec=executeAction(res.action);
   let say=String(res.say||'').trim();
-  if(out&&out.error)say=out.error;
-  const verse=lookupVerse(res.verse);
+  if(exec&&exec.error)say=exec.error;
+  else if(exec&&exec.say&&!say)say=exec.say;
+  else if(exec&&exec.ok===false&&exec.status)say=(say?say+' ':'')+tr('Ojo: ','Note: ')+exec.status.replace(/^⚠ /,'')+'.';
+  let verse=null,vinfo=null;
+  const cands=res._bible||opts.bible;
+  if(res.verse||(state.mode==='advice'&&cands&&cands.length&&res.engine!=='reglas')){vinfo=verifyVerse(res.verse,cands);verse=vinfo.verse}
   const shown=say+(verse?'\n\n“'+verse.text+'”\n— '+verse.ref:'');
   const spoken=say+(verse?' '+verse.ref+'. '+verse.text:'');
-  const link=out&&out.url?{url:out.url,label:out.label}:null;
-  state.messages.push({role:'assistant',text:shown||'…',link});state.messages=state.messages.slice(-100);save();renderChat();
+  const link=exec&&exec.url?{url:exec.url,label:exec.label}:null;
+  const msg={role:'assistant',text:shown||'…',link,engine:res.engine||'basico',status:exec&&exec.status||'',sources:res.sources||[]};
+  if(vinfo&&vinfo.verse)msg.status=(msg.status?msg.status+' · ':'')+'✓ '+tr('Cita verificada en la Biblia local','Quote verified in the local Bible')+(vinfo.replaced?tr(' (elegida por TARS)',' (chosen by TARS)'):'');
+  if(res.meta&&res.meta.ms)msg.status=(msg.status?msg.status+' · ':'')+(res.meta.ms/1000).toFixed(1)+' s';
+  if(exec&&exec.cleared)state.messages=[];
+  state.messages.push(msg);state.messages=state.messages.slice(-100);save();renderChat();
   showActionSlot(link);
   document.body.classList.remove('is-thinking');
-  if(note)toast(note);
-  if(opts.fromWatch&&window.TarsNative){try{TarsNative.onReply(spoken||shown)}catch{}}
+  if(res.engine==='nube'&&!processCommand.cloudToastShown){processCommand.cloudToastShown=true;toast(tr('Usé la nube (Gemini) para esta respuesta.','I used the cloud (Gemini) for this answer.'))}
+  if(res.note)toast(res.note);
+  if(opts.fromWatch&&window.TarsNative){try{TarsNative.onReply((res.engine==='nube'?'☁ ':'')+(spoken||shown))}catch{}}
   else await speakReply(spoken);
-  if(out&&out.self&&out.url){if(window.TarsNative){try{TarsNative.openUrl(out.url)}catch{}}else location.href=out.url}
+  if(exec&&exec.self&&exec.url){if(window.TarsNative){try{TarsNative.openUrl(exec.url)}catch{}}else location.href=exec.url}
   busy=false;resumeListening();
   if(cmdQueue.length){const [c,o]=cmdQueue.shift();setTimeout(()=>processCommand(c,o),50)}
 }
 
 /* ---------- Conversación ---------- */
-message=function(role,text){const el=document.createElement('div');el.className='message'+(role==='user'?' user':'');const label=document.createElement('small');label.textContent=role==='user'?tr('TÚ','YOU'):String(state.name).toUpperCase()+(cfg.apiKey&&navigator.onLine?'':' · LOCAL');el.append(label,document.createTextNode(String(text)));$('messages').append(el);return el};
+message=function(role,text,meta){const el=document.createElement('div');el.className='message'+(role==='user'?' user':'')+(meta&&meta.engine==='nube'?' cloud':'');const label=document.createElement('small');label.textContent=role==='user'?tr('TÚ','YOU'):String(state.name).toUpperCase()+(meta&&meta.engine?' · '+(ENGINE_LABEL[meta.engine]||meta.engine):'');el.append(label,document.createTextNode(String(text)));
+  if(meta&&meta.status){const st=document.createElement('div');st.className='act-status';st.textContent=meta.status;el.append(st)}
+  if(meta&&meta.sources&&meta.sources.length){const sv=document.createElement('div');sv.className='act-status';sv.append(document.createTextNode(tr('Fuentes: ','Sources: ')));meta.sources.forEach((s,i)=>{const a=document.createElement('a');a.href=s.url;a.target='_blank';a.rel='noopener';a.textContent=(i?' · ':'')+String(s.title).slice(0,40);sv.append(a)});el.append(sv)}
+  $('messages').append(el);return el};
+function brainSummary(){const st=llmStatus().state;const local=['ready','downloaded','loading'].includes(st)?'Gemma local':(st==='downloading'?tr('Gemma (descargando)','Gemma (downloading)'):null);const cloud=cfg.cloud!=='never'&&navigator.onLine?'Gemini '+(cfg.cloud==='always'?tr('(siempre)','(always)'):tr('(si hace falta)','(when needed)')):null;return [local||tr('reglas básicas','basic rules'),cloud].filter(Boolean).join(' + ')}
 renderChat=function(){
   const box=$('messages');box.replaceChildren();
-  message('assistant',cfg.apiKey&&navigator.onLine?tr('Soy '+state.name+'. Modo '+modes[state.mode].es+'. Dime «'+state.name+'» y tu comando, o escríbeme aquí.','I’m '+state.name+'. '+modes[state.mode].en+' mode. Say “'+state.name+'” and your command, or type here.'):tr('Soy '+state.name+'. Modo '+modes[state.mode].es+'. Estoy en modo local: entiendo comandos básicos. Conecta mi cerebro en «Cerebro, voz y contactos» para conversar de verdad.','I’m '+state.name+'. '+modes[state.mode].en+' mode. Local mode: basic commands only. Connect my brain in “Brain, voice & contacts” to really talk.'));
-  state.messages.forEach(m=>{const el=message(m.role,m.text);if(m.link&&/^(https:|tel:)/.test(m.link.url)){const a=document.createElement('a');a.className='pill act-link';a.href=m.link.url;a.target=m.link.url.startsWith('tel:')?'_self':'_blank';a.rel='noopener';a.textContent=m.link.label;el.append(document.createElement('br'),a)}});
+  message('assistant',tr('Soy '+state.name+'. Modo '+modes[state.mode].es+'. Cerebro: '+brainSummary()+'. Dime «'+state.name+'» y tu comando, o escríbeme aquí.','I’m '+state.name+'. '+modes[state.mode].en+' mode. Brain: '+brainSummary()+'. Say “'+state.name+'” and your command, or type here.'));
+  state.messages.forEach(m=>{const el=message(m.role,m.text,m);if(m.link&&/^(https:|tel:)/.test(m.link.url)){const a=document.createElement('a');a.className='pill act-link';a.href=m.link.url;a.target=m.link.url.startsWith('tel:')?'_self':'_blank';a.rel='noopener';a.textContent=m.link.label;el.append(document.createElement('br'),a)}});
   box.scrollTop=box.scrollHeight;
 };
 $('chatForm').onsubmit=e=>{e.preventDefault();const v=$('chatInput').value.trim();if(!v)return;$('chatInput').value='';audioCtx();const w=extractWake(v);processCommand(w&&w.cmd?w.cmd:v)};
@@ -674,9 +903,41 @@ function loadVoiceList(){
   sel.value=cfg.voiceURI;
 }
 if('speechSynthesis'in window)speechSynthesis.addEventListener('voiceschanged',loadVoiceList);
-$('openBrain').onclick=()=>{$('cfgEngine').value=cfg.engine;$('cfgTimbre').value=cfg.timbre;$('cfgRobot').value=cfg.robot;$('cfgRobotVal').textContent=cfg.robot+'%';$('cfgKey').value=cfg.apiKey;$('cfgModel').value=cfg.model;$('cfgWake').value=cfg.wake;$('cfgContacts').value=cfg.contacts;loadVoiceList();$('brainDialog').showModal()};
-function readBrain(){cfg.engine=$('cfgEngine').value;cfg.timbre=$('cfgTimbre').value;cfg.robot=Number($('cfgRobot').value);neural.failUntil=0;neural.warned=false;cfg.apiKey=$('cfgKey').value.trim();cfg.model=$('cfgModel').value;cfg.voiceURI=$('cfgVoice').value;cfg.wake=$('cfgWake').value.trim()||'tars';cfg.contacts=$('cfgContacts').value;saveCfg();if(window.TarsNative)nativeWake();refreshDynamic();renderChat();idleVoice()}
-$('brainSave').onclick=()=>{readBrain();$('brainDialog').close();toast(cfg.apiKey?tr('Cerebro conectado.','Brain connected.'):tr('Ajustes guardados.','Settings saved.'))};
+$('openBrain').onclick=()=>{$('cfgEngine').value=cfg.engine;$('cfgTimbre').value=cfg.timbre;$('cfgRobot').value=cfg.robot;$('cfgRobotVal').textContent=cfg.robot+'%';$('cfgCloud').value=cfg.cloud;$('cfgCloudDaily').value=cfg.cloudDaily;$('cfgAppCheck').value=cfg.appCheckKey;$('cfgSyncHist').checked=state.syncHistory;renderLlm();renderCloud();renderMemory();renderDiag();$('cfgWake').value=cfg.wake;$('cfgContacts').value=cfg.contacts;loadVoiceList();$('brainDialog').showModal()};
+function readBrain(){cfg.engine=$('cfgEngine').value;cfg.timbre=$('cfgTimbre').value;cfg.robot=Number($('cfgRobot').value);neural.failUntil=0;neural.warned=false;cfg.cloud=$('cfgCloud').value;cfg.cloudDaily=clampN(parseInt($('cfgCloudDaily').value,10)||0,0,1000);cfg.appCheckKey=$('cfgAppCheck').value.trim();if(state.syncHistory!==$('cfgSyncHist').checked){state.syncHistory=$('cfgSyncHist').checked;save()}cfg.voiceURI=$('cfgVoice').value;cfg.wake=$('cfgWake').value.trim()||'tars';cfg.contacts=$('cfgContacts').value;saveCfg();if(window.TarsNative)nativeWake();refreshDynamic();renderChat();idleVoice()}
+$('brainSave').onclick=()=>{readBrain();$('brainDialog').close();toast(tr('Ajustes guardados.','Settings saved.'))};
+function renderLlm(){
+  const el=$('llmState'),dl=$('llmDl'),bench=$('llmBench'),del=$('llmDel');if(!el)return;
+  if(!window.TarsNative){el.textContent=tr('Disponible en la app Android (corre en el teléfono, sin internet).','Available in the Android app (runs on the phone, offline).');dl.hidden=bench.hidden=del.hidden=true;return}
+  const s=llmStatus();const T={absent:tr('No descargado. Pesa 2.6 GB: usa Wi-Fi y deja el teléfono cargando.','Not downloaded. 2.6 GB: use Wi-Fi.'),downloading:tr('Descargando… ','Downloading… ')+s.progress+'%',downloaded:tr('Listo en el teléfono. Se carga al primer uso (unos segundos).','Ready on the phone. Loads on first use.'),loading:tr('Cargando en memoria…','Loading into memory…'),ready:tr('Activo en ','Active on ')+s.backend+(s.tokPerSec?' · '+s.tokPerSec.toFixed(1)+' tok/s':'')+(s.loadMs?' · '+tr('carga ','load ')+(s.loadMs/1000).toFixed(1)+' s':''),error:s.error||'Error',unavailable:tr('No disponible','Unavailable')};
+  el.textContent=T[s.state]||s.state;if(s.freeMB>0&&['absent','error'].includes(s.state))el.textContent+=tr(' · Espacio libre: ',' · Free: ')+(s.freeMB/1024).toFixed(1)+' GB';
+  dl.hidden=!['absent','error','downloading'].includes(s.state);dl.textContent=s.state==='downloading'?tr('Cancelar','Cancel'):(s.partialMB>0?tr('Reanudar descarga','Resume download'):tr('Descargar (2.6 GB)','Download (2.6 GB)'));
+  bench.hidden=!['downloaded','ready'].includes(s.state);del.hidden=!['downloaded','ready','error'].includes(s.state);
+}
+function renderCloud(){const el=$('cloudState');if(el)el.textContent=tr('Hoy: ','Today: ')+cloudUsedToday()+tr(' de ',' of ')+cfg.cloudDaily+tr(' consultas',' requests')+(cfg.cloudModel?' · '+cfg.cloudModel:'')+(navigator.onLine?'':tr(' · sin internet',' · offline'))}
+function renderDiag(){const box=$('diagBox');if(!box)return;let d;
+  try{d=window.TarsNative&&TarsNative.diagnostics?JSON.parse(TarsNative.diagnostics()):null}catch{d=null}
+  const lines=[];
+  if(d){lines.push(d.device+' · Android '+d.android+' · app '+d.app,
+    tr('Batería: ','Battery: ')+d.battery+'%'+(d.charging?tr(' (cargando)',' (charging)'):'')+(d.batteryOptimized?tr(' · ⚠ optimización de batería activa',' · ⚠ battery optimization on'):''),
+    tr('Escucha: ','Listening: ')+(d.listening?d.listenMinutes+' min'+tr(' (pantalla apagada ',' (screen off ')+d.screenOffMinutes+' min)':tr('detenida','stopped'))+' · '+tr('activaciones ','wake-ups ')+d.wakeDetections+' · '+tr('comandos ','commands ')+d.commandsHeard,
+    tr('Consumo: ','Drain: ')+(d.batteryPerHour>=0?d.batteryPerHour+'%/h':tr('mide al menos 10 min con el cargador desconectado','measure 10+ min unplugged'))+' ('+d.batteryDrop+'% '+tr('desde que inició','since start')+')',
+    'RAM: '+d.ramAvailMB+' / '+d.ramTotalMB+' MB '+tr('libres','free')+' · TARS '+d.appPssMB+' MB'+(d.lowMemory?' · ⚠ '+tr('memoria baja','low memory'):''),
+    'Gemma: '+d.llm.state+(d.llm.backend?' · '+d.llm.backend:'')+(d.llm.loadMs?' · '+tr('carga ','load ')+(d.llm.loadMs/1000).toFixed(1)+' s':'')+(d.llm.lastMs?' · '+tr('última ','last ')+(d.llm.lastMs/1000).toFixed(1)+' s, '+d.llm.tokPerSec.toFixed(1)+' tok/s':'')+' · '+d.llm.answered+tr(' respuestas',' replies'),
+    tr('Reconocimiento sin internet: ','Offline recognition: ')+(d.voskReady?'✓':'—')+' · '+tr('caché offline ','offline cache ')+d.webCacheMB+' MB')}
+  else lines.push(tr('Navegador: ','Browser: ')+navigator.userAgent.split(') ')[0]+')',tr('El diagnóstico completo está en la app Android.','Full diagnostics are in the Android app.'));
+  lines.push(tr('Nube: ','Cloud: ')+cfg.cloud+' · '+cloudUsedToday()+'/'+cfg.cloudDaily+tr(' hoy',' today')+' · '+(navigator.onLine?tr('en línea','online'):tr('sin internet','offline')),tr('Memoria: ','Memory: ')+state.memory.length+tr(' recuerdos · notas: ',' items · notes: ')+state.notes.length+' · '+tr('sync: ','sync: ')+(sync.user?'✓':'—'));
+  box.textContent=lines.join('\n');
+}
+$('llmDl').onclick=()=>{const s=llmStatus();if(s.state==='downloading')TarsNative.llmCancel();else TarsNative.llmDownload();setTimeout(renderLlm,400)};
+$('llmDel').onclick=()=>{if(confirm(tr('¿Borrar el modelo Gemma del teléfono (2.6 GB)?','Delete the Gemma model (2.6 GB)?'))){TarsNative.llmDelete();renderLlm();refreshDynamic()}};
+$('llmBench').onclick=async()=>{const el=$('llmState');el.textContent=tr('Probando… la primera vez carga el modelo.','Testing… first run loads the model.');const t0=performance.now();
+  try{const r=await askGemma(tr('Preséntate en una frase.','Introduce yourself in one sentence.'),{});el.textContent='✓ '+((performance.now()-t0)/1000).toFixed(1)+' s · '+(r.meta.backend||'')+' · '+(r.meta.tps||0).toFixed(1)+' tok/s · «'+String(r.say).slice(0,80)+'»'}catch(e){el.textContent='⚠ '+e.message}renderDiag()};
+$('memClear').onclick=()=>{if(confirm(tr('¿Borrar todo lo que TARS recuerda?','Clear everything TARS remembers?'))){memoryClear();toast(tr('Memoria borrada.','Memory cleared.'))}};
+$('chatClear').onclick=()=>{state.messages=[];save();renderChat();toast(tr('Conversación borrada.','Conversation cleared.'))};
+$('diagRefresh').onclick=renderDiag;
+$('diagCopy').onclick=()=>{const t=$('diagBox').textContent;try{navigator.clipboard.writeText(t);toast(tr('Reporte copiado.','Report copied.'))}catch{toast(t)}};
+setInterval(()=>{if($('brainDialog').open){renderLlm();renderCloud()}},2000);
 $('closeBrain').onclick=()=>$('brainDialog').close();
 $('cfgRobot').oninput=()=>{$('cfgRobotVal').textContent=$('cfgRobot').value+'%'};
 $('testVoice').onclick=()=>{readBrain();audioCtx();speakReply(witty()?tr('Hola, Alberto. Sistemas en línea. Humor al '+state.humor+' por ciento. Prepárate, esto podría ponerse gracioso.','Hello, Alberto. Systems online. Humor at '+state.humor+' percent. Brace yourself.'):tr('Hola, Alberto. Sistemas en línea.','Hello, Alberto. Systems online.'))};
@@ -722,6 +983,7 @@ if(NATIVE){
     else if(ev.type==='progress'){voiceStatus(tr('Descargando el modelo de escucha… ','Downloading listening model… ')+ev.pct+'%')}
     else if(ev.type==='error'){voiceStatus(String(ev.text||''),true)}
     else if(ev.type==='toast'){toast(String(ev.text||''))}
+    else if(/^llm/.test(ev.type)){onLlmEvent(ev)}
   }};
 }
 window.__tarsNativeCommand=(cmd,fromWatch)=>{audioCtx();processCommand(cmd,{fromWatch:!!fromWatch})};
@@ -765,7 +1027,7 @@ async function syncInit(){
   sync.loading=(async()=>{
     try{
       const [app,au,fs]=await Promise.all([import(FB+'firebase-app.js'),import(FB+'firebase-auth.js'),import(FB+'firebase-firestore.js')]);
-      const fapp=app.initializeApp(firebaseConfig);
+      const fapp=app.initializeApp(firebaseConfig);sync.app=fapp;
       sync.au=au;sync.fs=fs;sync.auth=au.getAuth(fapp);
       try{sync.db=fs.initializeFirestore(fapp,{localCache:fs.persistentLocalCache({tabManager:fs.persistentMultipleTabManager()})})}
       catch{sync.db=fs.getFirestore(fapp)}
@@ -803,8 +1065,10 @@ function applyRemote(r){
     ['name','mode','lang','theme'].forEach(k=>{if(typeof r[k]==='string')state[k]=r[k]});
     ['humor','sarcasm','brevity','honesty'].forEach(k=>{if(Number.isFinite(Number(r[k])))state[k]=Number(r[k])});
     if(typeof r.confirm==='boolean')state.confirm=r.confirm;
-    if(Array.isArray(r.messages))state.messages=r.messages.map(m=>({role:m.role,text:m.text,link:m.link||null}));
-    if(r.cfg&&typeof r.cfg==='object'){['model','wake','contacts','engine','timbre'].forEach(k=>{if(typeof r.cfg[k]==='string')cfg[k]=r.cfg[k]});if(Number.isFinite(Number(r.cfg.robot)))cfg.robot=Number(r.cfg.robot);try{localStorage.setItem(CFG_KEY,JSON.stringify(cfg))}catch{}}
+    if(Array.isArray(r.memory))state.memory=r.memory.filter(m=>m&&m.text);
+    if(typeof r.syncHistory==='boolean')state.syncHistory=r.syncHistory;
+    if(r.syncHistory!==false&&Array.isArray(r.messages)&&r.messages.length)state.messages=r.messages.map(m=>({role:m.role,text:m.text,link:m.link||null}));
+    if(r.cfg&&typeof r.cfg==='object'){['cloud','wake','contacts','engine','timbre'].forEach(k=>{if(typeof r.cfg[k]==='string')cfg[k]=r.cfg[k]});if(Number.isFinite(Number(r.cfg.cloudDaily)))cfg.cloudDaily=Number(r.cfg.cloudDaily);if(Number.isFinite(Number(r.cfg.robot)))cfg.robot=Number(r.cfg.robot);try{localStorage.setItem(CFG_KEY,JSON.stringify(cfg))}catch{}}
     state.updatedAt=Number(r.updatedAt)||Date.now();
     localSave();
     ['humor','sarcasm','brevity'].forEach(k=>{if($(k)){$(k).value=state[k];$(k+'Value').textContent=state[k]+'%'}});
@@ -818,8 +1082,9 @@ function pushState(){
   if(!sync.user)return;const {doc,setDoc}=sync.fs;
   const data={name:String(state.name),mode:state.mode,lang:state.lang,theme:state.theme,confirm:!!state.confirm,
     humor:Number(state.humor),sarcasm:Number(state.sarcasm),brevity:Number(state.brevity),honesty:Number(state.honesty),
-    messages:state.messages.slice(-60).map(m=>({role:m.role==='user'?'user':'assistant',text:String(m.text||'').slice(0,4000),link:m.link&&m.link.url?{url:String(m.link.url),label:String(m.link.label||'')}:null})),
-    cfg:{model:cfg.model,wake:cfg.wake,contacts:cfg.contacts,engine:cfg.engine,timbre:cfg.timbre,robot:Number(cfg.robot)},
+    memory:state.memory.slice(0,80).map(m=>({id:String(m.id),text:String(m.text).slice(0,500),date:String(m.date||'')})),syncHistory:!!state.syncHistory,
+    messages:(state.syncHistory?state.messages:[]).slice(-60).map(m=>({role:m.role==='user'?'user':'assistant',text:String(m.text||'').slice(0,4000),link:m.link&&m.link.url?{url:String(m.link.url),label:String(m.link.label||'')}:null})),
+    cfg:{cloud:cfg.cloud,cloudDaily:Number(cfg.cloudDaily),wake:cfg.wake,contacts:cfg.contacts,engine:cfg.engine,timbre:cfg.timbre,robot:Number(cfg.robot)},
     updatedAt:Number(state.updatedAt)||Date.now()};
   setDoc(doc(sync.db,'users',sync.user.uid,'tars','state'),data).then(()=>{sync.lastError='';refreshNet()}).catch(e=>{sync.lastError=friendlyError(e);refreshNet()});
   uploadMissingNotes();
