@@ -7,7 +7,7 @@ val runNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
 
 android {
     namespace = "com.rocaprimaria.tars"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.rocaprimaria.tars"
@@ -42,6 +42,8 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        // LiteRT-LM se compila con una versión de Kotlin más nueva
+        freeCompilerArgs += listOf("-Xskip-metadata-version-check")
     }
     lint {
         checkReleaseBuilds = false
@@ -55,4 +57,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-wearable:18.2.0")
     implementation("com.alphacephei:vosk-android:0.3.47")
     implementation("net.java.dev.jna:jna:5.13.0@aar")
+    // Cerebro sin internet: Gemma 4 en el teléfono
+    implementation("com.google.ai.edge.litertlm:litertlm-android:0.17.1")
 }

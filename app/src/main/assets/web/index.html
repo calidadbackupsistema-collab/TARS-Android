@@ -38,6 +38,7 @@ dialog .field{margin:14px 0}dialog .field label{display:block;font-size:11px;col
 dialog input[type=text],dialog input[type=password],dialog input[type=email],dialog select{width:100%;background:#16374b44;border:1px solid var(--line);border-radius:14px;color:white;padding:12px 14px}
 dialog .field textarea{min-height:90px;margin:0;font-family:Consolas,monospace;font-size:13px}.hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:6px}
 #brainDialog{max-height:90vh;overflow:auto}.apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0}.apps-grid a{border:1px solid var(--line);background:#d6edfc13;border-radius:15px;padding:14px;text-align:center;text-decoration:none;color:var(--ink);font-size:13px}
+.message .sources{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.message .sources .act-link{font-size:11px;padding:5px 10px}
 </style></head><body>
 <svg style="display:none" aria-hidden="true"><defs>
 <symbol id="home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3zM9 20v-7h6v7"/></symbol><symbol id="chat" viewBox="0 0 24 24"><path d="M4 4h16v13H9l-5 4zM8 9h8M8 13h5"/></symbol><symbol id="sliders" viewBox="0 0 24 24"><path d="M6 3v5m0 5v8M12 3v10m0 5v3M18 3v2m0 5v11M3 8h6m0 5h6m0-8h6"/></symbol><symbol id="mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></symbol><symbol id="note" viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5zM14 3v5h5M8 12h8M8 16h6"/></symbol><symbol id="arrow" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol><symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v5l3 2M9 2h6"/></symbol><symbol id="apps" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol><symbol id="phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></symbol>
@@ -57,8 +58,17 @@ dialog .field textarea{min-height:90px;margin:0;font-family:Consolas,monospace;f
 <dialog id="micDialog"><h2>Activar la escucha</h2><p id="micBody">TARS necesita el micrófono para escucharte todo el tiempo.</p><div class="dialog-actions"><button class="pill" id="micLater" type="button">Ahora no</button><button class="primary" id="micAllow" type="button">Permitir micrófono</button></div></dialog>
 <dialog id="brainDialog"><div class="card-head"><h2>Cerebro, voz y contactos</h2><button class="round" id="closeBrain" aria-label="Cerrar">×</button></div>
 <div class="field"><label>Cuenta y sincronización</label><p class="hint" id="acctText" style="margin:0 0 10px"></p><button class="pill" id="acctBtn" type="button">Iniciar sesión con Google</button><div id="emailBox" style="margin-top:12px"><input type="email" id="acctEmail" placeholder="correo@ejemplo.com" autocomplete="email" style="margin-bottom:8px"><input type="password" id="acctPass" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password"><div class="dialog-actions" style="justify-content:flex-start;flex-wrap:wrap;margin-top:10px"><button class="pill" id="emailIn" type="button">Entrar</button><button class="pill" id="emailUp" type="button">Crear cuenta</button><button class="secondary" id="emailReset" type="button" style="padding:8px 4px;font-size:11px">Olvidé mi contraseña</button></div></div><p class="hint" id="acctErr" style="color:#f6d4af"></p></div>
-<div class="field"><label for="cfgKey">Clave API de Claude</label><input type="password" id="cfgKey" placeholder="sk-ant-…" autocomplete="off"><div class="hint">Sin clave, o sin internet, funciono en modo local con comandos básicos. La clave se guarda solo en este teléfono y no se sube a la nube.</div></div>
+<div class="field"><label for="cfgProvider">Cerebro en línea</label><select id="cfgProvider"><option value="gemini">Gemini · plan gratuito de Google</option><option value="claude">Claude · API de Anthropic (de pago)</option></select><div class="hint">Las claves se guardan solo en este teléfono y no se suben a la nube.</div></div>
+<div id="brainGemini">
+<div class="field"><label for="cfgGemKey">Clave API de Gemini</label><input type="password" id="cfgGemKey" placeholder="AIza…" autocomplete="off"><div class="hint">Gratis en <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. En el plan gratuito Google puede usar tus conversaciones para mejorar sus modelos: no le dictes información confidencial.</div></div>
+<div class="field"><label for="cfgGemModel">Modelo</label><select id="cfgGemModel"><option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite · el más rápido</option><option value="gemini-3.6-flash">Gemini 3.6 Flash · más listo</option></select></div>
+<div class="field"><label for="cfgTavKey">Clave de Tavily (búsqueda en internet)</label><input type="password" id="cfgTavKey" placeholder="tvly-…" autocomplete="off"><div class="hint">Gratis en <a href="https://app.tavily.com" target="_blank" rel="noopener">app.tavily.com</a> (1,000 búsquedas al mes). Con ella respondo noticias, clima, precios y datos actuales con fuentes.</div></div>
+</div>
+<div id="brainClaude" hidden>
+<div class="field"><label for="cfgKey">Clave API de Claude</label><input type="password" id="cfgKey" placeholder="sk-ant-…" autocomplete="off"></div>
 <div class="field"><label for="cfgModel">Modelo</label><select id="cfgModel"><option value="claude-haiku-5-5">Claude Haiku 5.5 · rápido</option><option value="claude-sonnet-5-5">Claude Sonnet 5.5 · más listo</option></select></div>
+</div>
+<div class="field" id="localBox"><label>Cerebro sin internet · Gemma 4</label><p class="hint" id="localText" style="margin:0 0 10px">Disponible en la app de Android.</p><div class="dialog-actions" style="justify-content:flex-start;flex-wrap:wrap;margin-top:0"><button class="pill" id="localDl" type="button">Descargar (2.6 GB · Wi-Fi)</button><button class="secondary" id="localDel" type="button" style="padding:8px 4px;font-size:11px" hidden>Borrar modelo</button></div><select id="cfgLocalAI" style="margin-top:10px"><option value="on">Usar Gemma cuando no haya internet</option><option value="off">No usar Gemma (solo comandos básicos)</option></select></div>
 <div class="field"><label for="cfgEngine">Motor de voz</label><select id="cfgEngine"><option value="neural">Voz TARS · neural en el teléfono</option><option value="system">Voz del sistema</option></select><div class="hint">La voz TARS se descarga una sola vez (unos 60 MB; usa Wi-Fi) y después funciona sin internet.</div></div>
 <div class="field"><label for="cfgTimbre">Timbre</label><select id="cfgTimbre"><option value="es_MX-ald-medium">Grave · español de México</option><option value="es_MX-claude-high">Nítido · español de México (alta calidad, descarga mayor)</option></select></div>
 <div class="field"><label for="cfgRobot">Efecto robot <output id="cfgRobotVal" style="color:var(--lime);float:right"></output></label><input type="range" id="cfgRobot" min="0" max="100" step="5"></div>
@@ -224,7 +234,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden){pendingVoi
    TARS · Voz, cerebro y acciones (integrado sobre el cascarón Glass)
    ===================================================================== */
 const CFG_KEY='tars-glass-cfg';
-const cfg=Object.assign({apiKey:'',model:'claude-haiku-5-5',voiceURI:'',wake:'tars, tarz, tars., tarss, taars, thars, tarts, tares, taras, stars',contacts:''},(()=>{try{return JSON.parse(localStorage.getItem(CFG_KEY)||'{}')||{}}catch{return {}}})());
+const cfg=Object.assign({apiKey:'',model:'claude-haiku-5-5',provider:'gemini',gemKey:'',gemModel:'gemini-3.5-flash-lite',tavKey:'',localAI:'on',voiceURI:'',wake:'tars, tarz, tars., tarss, taars, thars, tarts, tares, taras, stars',contacts:''},(()=>{try{return JSON.parse(localStorage.getItem(CFG_KEY)||'{}')||{}}catch{return {}}})());
 let syncHook=null;
 function saveCfg(){try{localStorage.setItem(CFG_KEY,JSON.stringify(cfg))}catch{}if(syncHook)syncHook()}
 if(!Number.isFinite(Number(state.honesty)))state.honesty=90;
@@ -255,15 +265,20 @@ function listenStatus(){
 }
 idleVoice=function(){if(busy||ttsBusy)return;voiceStatus(listenStatus(),!window.TarsNative&&(!SR||location.protocol==='file:'));refreshDynamic()};
 
+function brainLabel(){
+  if(onlineReady())return cfg.provider==='claude'?'Claude · '+(cfg.model.includes('sonnet')?'Sonnet':'Haiku'):'Gemini · '+(cfg.gemModel.includes('lite')?'Flash-Lite':'Flash')+(cfg.tavKey?' + web':'');
+  if(localAIReady())return tr('Gemma local','Local Gemma');
+  return tr('Modo local','Local mode');
+}
 function refreshDynamic(){
-  const brain=cfg.apiKey&&navigator.onLine?tr('Cerebro Claude','Claude brain'):tr('Modo local','Local mode');
+  const brain=brainLabel();
   const dot='<span class="dot'+(listening?'':' off')+'"></span> ';
   $('brainState').innerHTML=dot+(listening?tr('Escucha activa','Listening'):tr('En pausa','Paused'))+' · '+brain;
   $('topStatus').innerHTML=dot+(listening?tr('Escuchando «'+state.name+'»','Listening for “'+state.name+'”'):tr('Escucha en pausa','Listening paused'));
   $('wake').textContent=listening?tr('Pausar escucha ↗','Pause listening ↗'):tr('Reanudar escucha ↗','Resume listening ↗');
-  $('selfStatus').innerHTML=cfg.apiKey?tr('Cerebro conectado.<br>Voz siempre atenta.','Brain connected.<br>Always listening.'):tr('Modo local: comandos básicos.<br>Conecta mi cerebro para conversar.','Local mode: basic commands.<br>Connect my brain to talk freely.');
-  $('chatChip').textContent=cfg.apiKey&&navigator.onLine?'Claude · '+(cfg.model.includes('sonnet')?'Sonnet':'Haiku'):tr('Modo local','Local mode');
-  $('chatNote').textContent=cfg.apiKey?tr('Puedes escribir o hablar. Las respuestas se leen en voz alta.','Type or speak. Replies are read aloud.'):tr('Sin cerebro conectado entiendo comandos básicos: hora, temporizadores, notas, llamadas, mensajes, rutas y búsquedas.','Without a brain I understand basic commands: time, timers, notes, calls, messages, routes and searches.');
+  $('selfStatus').innerHTML=brainKey()||localAIReady()?tr('Cerebro conectado.<br>Voz siempre atenta.','Brain connected.<br>Always listening.'):tr('Modo local: comandos básicos.<br>Conecta mi cerebro para conversar.','Local mode: basic commands.<br>Connect my brain to talk freely.');
+  $('chatChip').textContent=brain;
+  $('chatNote').textContent=brainKey()||localAIReady()?tr('Puedes escribir o hablar. Las respuestas se leen en voz alta.','Type or speak. Replies are read aloud.'):tr('Sin cerebro conectado entiendo comandos básicos: hora, temporizadores, notas, llamadas, mensajes, rutas y búsquedas.','Without a brain I understand basic commands: time, timers, notes, calls, messages, routes and searches.');
   $('footNote').textContent=tr('Voz siempre activa · En línea con Firebase, local sin internet','Always-on voice · Online with Firebase, local when offline');
   document.body.classList.toggle('is-attentive',awaiting);
 }
@@ -536,8 +551,9 @@ function lookupVerse(v){
 }
 
 /* ---------- Cerebro: Claude ---------- */
-function systemPrompt(){
-  const es=state.lang!=='en';
+function systemPrompt(kind){
+  const es=state.lang!=='en';kind=kind||'claude';
+  const web=kind==='gemini'&&!!cfg.tavKey,results=kind==='results';
   const now=new Date().toLocaleString(es?'es-MX':'en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
   const MODE={
     work:'A la Obra: práctico y enfocado; aterriza objetivo, prioridades y el siguiente paso concreto.',
@@ -552,12 +568,13 @@ Parámetros de personalidad (0-100): humor ${state.humor}, sarcasmo ${state.sarc
 Si el usuario pide cambiar un parámetro o el modo, hazlo con la acción correspondiente y coméntalo en tu estilo. Si pregunta cómo estás configurado, dile los valores.
 Tus respuestas se leen en voz alta: frases cortas, sin emojis, sin markdown${Number(state.brevity)>60?', máximo 2 o 3 frases':''}.
 Fecha y hora local: ${now}. Contactos guardados: ${contacts().map(c=>c.name).join(', ')||'ninguno'}.
+Ve al punto: la primera frase es la respuesta directa; agrega contexto solo si aporta.
 Responde SIEMPRE solo con JSON válido, sin texto adicional:
-{"say":"lo que dirás","action":null,"verse":null}
+{"say":"lo que dirás","action":null,"verse":null${web?',"web":null':''}}
 Acciones posibles para "action" (null si no aplica):
 {"type":"call","to":"nombre o número"} | {"type":"whatsapp","to":"nombre o número","text":"mensaje"} | {"type":"maps","query":"destino"} | {"type":"search","query":"búsqueda"} | {"type":"youtube","query":"búsqueda"} | {"type":"open_app","app":"whatsapp|maps|youtube|spotify|gmail|calendar|drive|github|phone"} | {"type":"timer","seconds":300,"label":"etiqueta"} | {"type":"note","text":"contenido de la nota"} | {"type":"set_mode","mode":"work|advice|fight|comfort"} | {"type":"set_humor","value":60} | {"type":"set_sarcasm","value":40} | {"type":"set_brevity","value":80} | {"type":"set_honesty","value":90} | {"type":"pause_listening"} | {"type":"url","url":"https://..."}
 "verse" (solo si citas la Biblia): {"book":"Filipenses","chapter":4,"from":6,"to":7}
-No tienes internet en tiempo real: para clima, noticias o datos actuales usa la acción "search". Si algo no se puede hacer desde el teléfono, dilo con honestidad. Tu humor es original: no cites diálogos de películas.`;
+${web?'Puedes buscar en internet: si la pregunta necesita datos actuales o que no conoces con certeza (noticias, clima, precios, tipo de cambio, resultados, horarios, quién ocupa un cargo, normas vigentes, productos recientes), NO la contestes de memoria: responde {"say":"","action":null,"verse":null,"web":"consulta de búsqueda breve y específica"}. El sistema te devolverá resultados para que respondas.':results?'Abajo vienen resultados de búsqueda web: responde con base en ellos, al punto, y menciona de qué sitio sale el dato principal. Si los resultados no lo responden, dilo. No pidas otra búsqueda.':kind==='local'?'Ahora no hay internet: si piden datos actuales (clima, noticias, precios), dilo con honestidad y usa la acción "search" para que la búsqueda quede lista.':'No tienes internet en tiempo real: para clima, noticias o datos actuales usa la acción "search".'} Si algo no se puede hacer desde el teléfono, dilo con honestidad. Tu humor es original: no cites diálogos de películas.`;
 }
 function chatHistory(){
   const out=[];
@@ -567,8 +584,8 @@ function chatHistory(){
 }
 function parseReply(text){
   const s=text.indexOf('{'),e=text.lastIndexOf('}');
-  if(s>=0&&e>s){try{const j=JSON.parse(text.slice(s,e+1));if(typeof j.say==='string')return {say:j.say,action:j.action||null,verse:j.verse||null}}catch{}}
-  return {say:text.replace(/[*#_`]/g,'').trim(),action:null,verse:null};
+  if(s>=0&&e>s){try{const j=JSON.parse(text.slice(s,e+1));if(typeof j.say==='string')return {say:j.say,action:j.action||null,verse:j.verse||null,web:typeof j.web==='string'&&j.web.trim()?j.web.trim():null}}catch{}}
+  return {say:text.replace(/[*#_`{}"]/g,'').trim(),action:null,verse:null,web:null};
 }
 async function askClaude(){
   const ctrl=new AbortController(),to=setTimeout(()=>ctrl.abort(),20000);let r;
@@ -579,6 +596,131 @@ async function askClaude(){
   const data=await r.json();
   return parseReply((data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join(''));
 }
+
+/* ---------- Red: puente nativo (sin CORS) o fetch normal ---------- */
+const httpWait={};let httpSeq=0;
+window.__tarsHttp=(id,status,body)=>{const w=httpWait[id];if(w){delete httpWait[id];w(status,body)}};
+function netRequest(url,{method='POST',headers={},body='',timeout=25000}={}){
+  if(window.TarsNative&&TarsNative.httpRequest){
+    return new Promise((res,rej)=>{
+      const id='h'+(++httpSeq);
+      const t=setTimeout(()=>{delete httpWait[id];const e=new Error('timeout');e.name='AbortError';rej(e)},timeout+3000);
+      httpWait[id]=(status,text)=>{clearTimeout(t);if(!status)rej(new Error(text||tr('sin conexión','offline')));else res({status,body:text})};
+      try{TarsNative.httpRequest(id,url,method,JSON.stringify(headers),body,timeout)}catch(e){clearTimeout(t);delete httpWait[id];rej(e)}
+    });
+  }
+  const ctrl=new AbortController(),t=setTimeout(()=>ctrl.abort(),timeout);
+  return fetch(url,{method,headers,body:method==='GET'?undefined:body,signal:ctrl.signal}).then(async r=>({status:r.status,body:await r.text()})).finally(()=>clearTimeout(t));
+}
+async function netJSON(url,opts){
+  const r=await netRequest(url,opts);let j=null;try{j=JSON.parse(r.body)}catch{}
+  if(r.status<200||r.status>=300){
+    let d=j&&(j.error&&(j.error.message||j.error)||j.detail&&(j.detail.error||j.detail)||j.message)||'';if(typeof d!=='string')d=JSON.stringify(d);
+    const e=new Error('HTTP '+r.status+(d?' · '+d.slice(0,180):''));e.status=r.status;throw e;
+  }
+  if(!j)throw new Error(tr('respuesta no válida','invalid response'));
+  return j;
+}
+
+/* ---------- Cerebro: Gemini (+ Tavily para internet) ---------- */
+const brainKey=()=>cfg.provider==='claude'?cfg.apiKey:cfg.gemKey;
+const onlineReady=()=>navigator.onLine&&!!brainKey();
+const GEM_ALIAS={'gemini-3.6-flash':'gemini-flash-latest','gemini-3.5-flash-lite':'gemini-flash-lite-latest'};
+function gemContents(extra){
+  const out=chatHistory().map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]}));
+  if(extra&&out.length)out[out.length-1].parts.push({text:extra});
+  return out;
+}
+async function gemCall(system,contents){
+  const call=(model,lean)=>{
+    const gen={responseMimeType:'application/json',maxOutputTokens:900};
+    if(!lean)gen.thinkingConfig={thinkingLevel:'low'};
+    return netJSON('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent',{headers:{'content-type':'application/json','x-goog-api-key':cfg.gemKey},body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents,generationConfig:gen}),timeout:25000});
+  };
+  let model=cfg.gemModel,data;
+  try{data=await call(model,false)}
+  catch(e){
+    if(e.status===400&&/think/i.test(e.message))data=await call(model,true);
+    else if(e.status===404&&GEM_ALIAS[model]){model=GEM_ALIAS[model];data=await call(model,false).catch(e2=>{if(e2.status===400)return call(model,true);throw e2})}
+    else throw e;
+  }
+  const cand=(data.candidates||[])[0];
+  if(!cand){const why=data.promptFeedback&&data.promptFeedback.blockReason;throw new Error(why?tr('Gemini bloqueó la pregunta ('+why+')','Gemini blocked the prompt ('+why+')'):tr('Gemini no respondió','Gemini returned nothing'))}
+  return ((cand.content&&cand.content.parts)||[]).filter(p=>p.text&&!p.thought).map(p=>p.text).join('');
+}
+async function tavilySearch(q){
+  const j=await netJSON('https://api.tavily.com/search',{headers:{'content-type':'application/json','authorization':'Bearer '+cfg.tavKey},body:JSON.stringify({query:q,max_results:5,search_depth:'basic',include_answer:true}),timeout:15000});
+  return {answer:String(j.answer||''),results:(j.results||[]).filter(x=>x&&/^https:\/\//.test(x.url||''))};
+}
+const siteName=u=>{try{return new URL(u).hostname.replace(/^www\./,'')}catch{return u}};
+async function askGemini(){
+  const res=parseReply(await gemCall(systemPrompt('gemini'),gemContents()));
+  if(!res.web)return res;
+  if(!cfg.tavKey)return {say:res.say||tr('Para eso necesito buscar. Te dejo la búsqueda lista.','I need to search for that. Search is ready.'),action:{type:'search',query:res.web}};
+  voiceStatus(tr('Buscando en internet…','Searching the web…'));
+  let found=null;try{found=await tavilySearch(res.web)}catch(e){found={error:e.message,results:[]}}
+  if(!found.results.length&&!found.answer)return {say:tr('No pude consultar internet ahora'+(found.error?' ('+found.error+')':'')+'. Te dejo la búsqueda lista.','I couldn’t reach the web right now. Search is ready.'),action:{type:'search',query:res.web}};
+  const today=new Date().toLocaleDateString(state.lang==='en'?'en-US':'es-MX',{year:'numeric',month:'long',day:'numeric'});
+  const ctx='Resultados de búsqueda web (hoy es '+today+') para «'+res.web+'»:\n'+(found.answer?'Resumen del buscador: '+found.answer+'\n':'')+found.results.map((r,i)=>'['+(i+1)+'] '+String(r.title||'').slice(0,140)+' — '+siteName(r.url)+'\n'+String(r.content||'').slice(0,700)).join('\n\n');
+  voiceStatus(tr('Procesando…','Thinking…'));
+  const out=parseReply(await gemCall(systemPrompt('results'),gemContents(ctx)));
+  out.web=null;out.sources=found.results.slice(0,3).map(r=>({url:r.url,label:'🔗 '+siteName(r.url)}));
+  return out;
+}
+const askOnline=()=>cfg.provider==='claude'?askClaude():askGemini();
+
+/* ---------- Cerebro sin internet: Gemma 4 en el teléfono ---------- */
+const localWait={};let localSeq=0;
+window.__tarsLocal=(id,ok,text)=>{const w=localWait[id];if(w){delete localWait[id];w(ok,text)}};
+function localInfo(){if(!window.TarsNative||!TarsNative.localStatus)return {state:'unsupported'};try{return JSON.parse(TarsNative.localStatus())}catch{return {state:'unsupported'}}}
+function localAIReady(){return cfg.localAI!=='off'&&localInfo().state==='ready'}
+function askLocalAI(){
+  return new Promise((res,rej)=>{
+    const id='l'+(++localSeq);
+    const t=setTimeout(()=>{delete localWait[id];const e=new Error('timeout');e.name='AbortError';rej(e)},120000);
+    localWait[id]=(ok,text)=>{clearTimeout(t);ok?res(parseReply(String(text||''))):rej(new Error(text||'Gemma'))};
+    const hist=chatHistory().slice(-7).map(m=>({role:m.role,text:m.content}));
+    try{TarsNative.localGenerate(id,systemPrompt('local'),JSON.stringify(hist))}catch(e){clearTimeout(t);delete localWait[id];rej(e)}
+  });
+}
+async function offlineBrain(cmd){
+  const quick=localBrain(cmd);
+  if(!quick.fallback||!localAIReady())return quick;
+  voiceStatus(tr('Pensando sin internet…','Thinking offline…'));
+  return askLocalAI();
+}
+let localPoll=0;
+function renderLocal(){
+  const info=localInfo(),box=$('localText'),dl=$('localDl'),del=$('localDel');if(!box)return;
+  clearTimeout(localPoll);
+  dl.hidden=false;del.hidden=true;dl.disabled=false;$('cfgLocalAI').hidden=info.state==='unsupported';
+  if(info.state==='unsupported'){box.textContent=tr('Disponible en la app de Android.','Available in the Android app.');dl.hidden=true;return}
+  if(info.state==='downloading'){
+    const pct=info.total?Math.floor(info.done*100/info.total):0;
+    box.textContent=tr('Descargando… ','Downloading… ')+pct+'% ('+(info.done/1e9).toFixed(2)+' de '+(info.total/1e9).toFixed(2)+' GB). '+(info.text||tr('Puedes cerrar esta ventana; sigue en segundo plano.','You can close this; it continues in the background.'));
+    dl.textContent=tr('Cancelar descarga','Cancel download');
+  }else if(info.state==='ready'){
+    box.textContent=tr('Gemma 4 instalado ('+(info.size/1e9).toFixed(1)+' GB). Sin internet respondo con él; los comandos básicos siguen siendo instantáneos.','Gemma 4 installed. Offline, I answer with it.')+(info.engine==='ready'?tr(' Motor cargado en '+info.backend+'.',' Engine on '+info.backend+'.'):'')+(info.text?' '+info.text:'');
+    dl.hidden=true;del.hidden=false;
+  }else{
+    box.textContent=(info.state==='error'&&info.text?info.text+' ':'')+tr('Descarga Gemma 4 (2.6 GB, una sola vez) para conversar aunque no haya internet. Corre en tu teléfono: nada sale de él.','Download Gemma 4 (2.6 GB, once) to chat offline. Runs on your phone.')+(info.free>0?tr(' Libre: '+(info.free/1e9).toFixed(1)+' GB.',''):'');
+    dl.textContent=tr('Descargar (2.6 GB · Wi-Fi)','Download (2.6 GB · Wi-Fi)');
+  }
+  if($('brainDialog').open&&info.state==='downloading')localPoll=setTimeout(renderLocal,1500);
+}
+$('localDl').onclick=()=>{
+  const info=localInfo();
+  if(info.state==='downloading'){try{TarsNative.localCancel()}catch{}renderLocal();return}
+  let err='';try{err=TarsNative.localDownload(false)}catch(e){err=e.message}
+  if(err)toast(err);else toast(tr('Descarga iniciada. Usa Wi-Fi; verás el avance en las notificaciones.','Download started on Wi-Fi.'));
+  setTimeout(renderLocal,600);
+};
+$('localDel').onclick=()=>{if(!confirmDelete())return;try{TarsNative.localDelete()}catch{}setTimeout(()=>{renderLocal();refreshDynamic()},800)};
+function confirmDelete(){try{return window.confirm(tr('¿Borrar Gemma 4 del teléfono? Liberas 2.6 GB y tendrías que descargarlo otra vez.','Delete Gemma 4 from the phone?'))}catch{return true}}
+function showProviderFields(){const c=$('cfgProvider').value==='claude';$('brainClaude').hidden=!c;$('brainGemini').hidden=c}
+$('cfgProvider').onchange=showProviderFields;
+window.addEventListener('offline',()=>{if(cfg.localAI!=='off'&&window.TarsNative&&TarsNative.localWarmUp){try{TarsNative.localWarmUp()}catch{}}refreshDynamic();renderChat()});
+window.addEventListener('online',()=>{refreshDynamic();renderChat()});
 
 /* ---------- Cerebro: modo local ---------- */
 const NUMW={un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,once:11,doce:12,quince:15,veinte:20,treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100,cero:0};
@@ -607,10 +749,10 @@ function localBrain(cmd){
   if(/(quien eres|presentate|que eres)/.test(n))return {say:'Soy '+state.name+', tu asistente. Modo '+modes[state.mode].es+'. '+(w?'Sin cerebro conectado, soy básicamente un llavero con buena voz.':'Estoy en modo local.')};
   if(/^(hola|buenos dias|buenas tardes|buenas noches|que tal)/.test(n))return {say:w?'Hola, Alberto. Sistemas en línea. Ánimo, opcional.':'Hola, Alberto. ¿En qué te ayudo?'};
   if(/gracias/.test(n))return {say:w?'De nada. Lo anoto en mi evaluación de desempeño.':'Para eso estoy.'};
-  if(state.mode==='advice')return {say:biblicalCounsel(cmd)};
-  if(state.mode==='comfort')return {say:tr('Podemos ir despacio. No tienes que resolverlo todo hoy. Si quieres, empieza por decir qué es lo que más te pesa en este momento.','We can take this slowly. You don’t have to solve everything today. If you wish, start with what feels heaviest right now.')};
-  if(state.mode==='fight')return {say:tr('Vamos a poner la idea a prueba: ¿qué evidencia la sostiene, qué la contradice y qué te haría cambiar de opinión?','Let’s test the idea: what evidence supports it, what contradicts it, and what would change your mind?')};
-  return {say:tr('En modo local entiendo hora, temporizadores, notas, llamadas, mensajes, rutas, búsquedas y cambios de modo. Conecta mi cerebro para todo lo demás.','In local mode I understand time, timers, notes, calls, messages, routes, searches and mode changes. Connect my brain for everything else.')};
+  if(state.mode==='advice')return {say:biblicalCounsel(cmd),fallback:true};
+  if(state.mode==='comfort')return {fallback:true,say:tr('Podemos ir despacio. No tienes que resolverlo todo hoy. Si quieres, empieza por decir qué es lo que más te pesa en este momento.','We can take this slowly. You don’t have to solve everything today. If you wish, start with what feels heaviest right now.')};
+  if(state.mode==='fight')return {fallback:true,say:tr('Vamos a poner la idea a prueba: ¿qué evidencia la sostiene, qué la contradice y qué te haría cambiar de opinión?','Let’s test the idea: what evidence supports it, what contradicts it, and what would change your mind?')};
+  return {fallback:true,say:tr('En modo local entiendo hora, temporizadores, notas, llamadas, mensajes, rutas, búsquedas y cambios de modo. Conecta mi cerebro para todo lo demás.','In local mode I understand time, timers, notes, calls, messages, routes, searches and mode changes. Connect my brain for everything else.')};
 }
 
 /* ---------- Ciclo principal ---------- */
@@ -628,8 +770,12 @@ async function processCommand(cmd,opts={}){
   document.body.classList.add('is-thinking');voiceStatus(tr('Procesando…','Thinking…'));
   state.messages.push({role:'user',text:cmd});renderChat();
   let res,note='';
-  try{res=cfg.apiKey&&navigator.onLine?await askClaude():localBrain(cmd)}
-  catch(err){note=tr('Sin conexión con el cerebro','Brain unreachable')+' ('+(err.name==='AbortError'?tr('tiempo agotado','timeout'):err.message)+'). '+tr('Respondo en modo local.','Answering in local mode.');res=localBrain(cmd)}
+  try{res=onlineReady()?await askOnline():await offlineBrain(cmd)}
+  catch(err){
+    note=tr('Sin conexión con el cerebro','Brain unreachable')+' ('+(err.name==='AbortError'?tr('tiempo agotado','timeout'):err.message)+'). ';
+    try{res=onlineReady()?await offlineBrain(cmd):localBrain(cmd);note+=localAIReady()&&res&&!res.fallback?tr('Respondí con Gemma local.','Answered with local Gemma.'):tr('Respondo en modo local.','Answering in local mode.')}
+    catch{res=localBrain(cmd);note+=tr('Respondo en modo local.','Answering in local mode.')}
+  }
   const out=runAction(res.action);
   let say=String(res.say||'').trim();
   if(out&&out.error)say=out.error;
@@ -637,7 +783,8 @@ async function processCommand(cmd,opts={}){
   const shown=say+(verse?'\n\n“'+verse.text+'”\n— '+verse.ref:'');
   const spoken=say+(verse?' '+verse.ref+'. '+verse.text:'');
   const link=out&&out.url?{url:out.url,label:out.label}:null;
-  state.messages.push({role:'assistant',text:shown||'…',link});state.messages=state.messages.slice(-100);save();renderChat();
+  const sources=Array.isArray(res.sources)&&res.sources.length?res.sources:null;
+  state.messages.push({role:'assistant',text:shown||'…',link,sources});state.messages=state.messages.slice(-100);save();renderChat();
   showActionSlot(link);
   document.body.classList.remove('is-thinking');
   if(note)toast(note);
@@ -649,11 +796,11 @@ async function processCommand(cmd,opts={}){
 }
 
 /* ---------- Conversación ---------- */
-message=function(role,text){const el=document.createElement('div');el.className='message'+(role==='user'?' user':'');const label=document.createElement('small');label.textContent=role==='user'?tr('TÚ','YOU'):String(state.name).toUpperCase()+(cfg.apiKey&&navigator.onLine?'':' · LOCAL');el.append(label,document.createTextNode(String(text)));$('messages').append(el);return el};
+message=function(role,text){const el=document.createElement('div');el.className='message'+(role==='user'?' user':'');const label=document.createElement('small');label.textContent=role==='user'?tr('TÚ','YOU'):String(state.name).toUpperCase()+(onlineReady()?'':localAIReady()?' · GEMMA':' · LOCAL');el.append(label,document.createTextNode(String(text)));$('messages').append(el);return el};
 renderChat=function(){
   const box=$('messages');box.replaceChildren();
-  message('assistant',cfg.apiKey&&navigator.onLine?tr('Soy '+state.name+'. Modo '+modes[state.mode].es+'. Dime «'+state.name+'» y tu comando, o escríbeme aquí.','I’m '+state.name+'. '+modes[state.mode].en+' mode. Say “'+state.name+'” and your command, or type here.'):tr('Soy '+state.name+'. Modo '+modes[state.mode].es+'. Estoy en modo local: entiendo comandos básicos. Conecta mi cerebro en «Cerebro, voz y contactos» para conversar de verdad.','I’m '+state.name+'. '+modes[state.mode].en+' mode. Local mode: basic commands only. Connect my brain in “Brain, voice & contacts” to really talk.'));
-  state.messages.forEach(m=>{const el=message(m.role,m.text);if(m.link&&/^(https:|tel:)/.test(m.link.url)){const a=document.createElement('a');a.className='pill act-link';a.href=m.link.url;a.target=m.link.url.startsWith('tel:')?'_self':'_blank';a.rel='noopener';a.textContent=m.link.label;el.append(document.createElement('br'),a)}});
+  message('assistant',onlineReady()||localAIReady()?tr('Soy '+state.name+'. Modo '+modes[state.mode].es+'. Dime «'+state.name+'» y tu comando, o escríbeme aquí.','I’m '+state.name+'. '+modes[state.mode].en+' mode. Say “'+state.name+'” and your command, or type here.'):tr('Soy '+state.name+'. Modo '+modes[state.mode].es+'. Estoy en modo local: entiendo comandos básicos. Conecta mi cerebro en «Cerebro, voz y contactos» para conversar de verdad.','I’m '+state.name+'. '+modes[state.mode].en+' mode. Local mode: basic commands only. Connect my brain in “Brain, voice & contacts” to really talk.'));
+  state.messages.forEach(m=>{const el=message(m.role,m.text);if(m.link&&/^(https:|tel:)/.test(m.link.url)){const a=document.createElement('a');a.className='pill act-link';a.href=m.link.url;a.target=m.link.url.startsWith('tel:')?'_self':'_blank';a.rel='noopener';a.textContent=m.link.label;el.append(document.createElement('br'),a)}if(Array.isArray(m.sources)){const row=document.createElement('div');row.className='sources';m.sources.filter(x=>x&&/^https:\/\//.test(x.url)).forEach(x=>{const a=document.createElement('a');a.className='pill act-link';a.href=x.url;a.target='_blank';a.rel='noopener';a.textContent=String(x.label||x.url);row.append(a)});if(row.childElementCount)el.append(row)}});
   box.scrollTop=box.scrollHeight;
 };
 $('chatForm').onsubmit=e=>{e.preventDefault();const v=$('chatInput').value.trim();if(!v)return;$('chatInput').value='';audioCtx();const w=extractWake(v);processCommand(w&&w.cmd?w.cmd:v)};
@@ -674,9 +821,9 @@ function loadVoiceList(){
   sel.value=cfg.voiceURI;
 }
 if('speechSynthesis'in window)speechSynthesis.addEventListener('voiceschanged',loadVoiceList);
-$('openBrain').onclick=()=>{$('cfgEngine').value=cfg.engine;$('cfgTimbre').value=cfg.timbre;$('cfgRobot').value=cfg.robot;$('cfgRobotVal').textContent=cfg.robot+'%';$('cfgKey').value=cfg.apiKey;$('cfgModel').value=cfg.model;$('cfgWake').value=cfg.wake;$('cfgContacts').value=cfg.contacts;loadVoiceList();$('brainDialog').showModal()};
-function readBrain(){cfg.engine=$('cfgEngine').value;cfg.timbre=$('cfgTimbre').value;cfg.robot=Number($('cfgRobot').value);neural.failUntil=0;neural.warned=false;cfg.apiKey=$('cfgKey').value.trim();cfg.model=$('cfgModel').value;cfg.voiceURI=$('cfgVoice').value;cfg.wake=$('cfgWake').value.trim()||'tars';cfg.contacts=$('cfgContacts').value;saveCfg();if(window.TarsNative)nativeWake();refreshDynamic();renderChat();idleVoice()}
-$('brainSave').onclick=()=>{readBrain();$('brainDialog').close();toast(cfg.apiKey?tr('Cerebro conectado.','Brain connected.'):tr('Ajustes guardados.','Settings saved.'))};
+$('openBrain').onclick=()=>{$('cfgEngine').value=cfg.engine;$('cfgTimbre').value=cfg.timbre;$('cfgRobot').value=cfg.robot;$('cfgRobotVal').textContent=cfg.robot+'%';$('cfgKey').value=cfg.apiKey;$('cfgModel').value=cfg.model;$('cfgProvider').value=cfg.provider;$('cfgGemKey').value=cfg.gemKey;$('cfgGemModel').value=cfg.gemModel;$('cfgTavKey').value=cfg.tavKey;$('cfgLocalAI').value=cfg.localAI;showProviderFields();renderLocal();$('cfgWake').value=cfg.wake;$('cfgContacts').value=cfg.contacts;loadVoiceList();$('brainDialog').showModal()};
+function readBrain(){cfg.engine=$('cfgEngine').value;cfg.timbre=$('cfgTimbre').value;cfg.robot=Number($('cfgRobot').value);neural.failUntil=0;neural.warned=false;cfg.apiKey=$('cfgKey').value.trim();cfg.model=$('cfgModel').value;cfg.provider=$('cfgProvider').value;cfg.gemKey=$('cfgGemKey').value.trim();cfg.gemModel=$('cfgGemModel').value;cfg.tavKey=$('cfgTavKey').value.trim();cfg.localAI=$('cfgLocalAI').value;cfg.voiceURI=$('cfgVoice').value;cfg.wake=$('cfgWake').value.trim()||'tars';cfg.contacts=$('cfgContacts').value;saveCfg();if(window.TarsNative)nativeWake();refreshDynamic();renderChat();idleVoice()}
+$('brainSave').onclick=()=>{readBrain();$('brainDialog').close();toast(brainKey()?tr('Cerebro conectado: ','Brain connected: ')+brainLabel()+'.':tr('Ajustes guardados.','Settings saved.'))};
 $('closeBrain').onclick=()=>$('brainDialog').close();
 $('cfgRobot').oninput=()=>{$('cfgRobotVal').textContent=$('cfgRobot').value+'%'};
 $('testVoice').onclick=()=>{readBrain();audioCtx();speakReply(witty()?tr('Hola, Alberto. Sistemas en línea. Humor al '+state.humor+' por ciento. Prepárate, esto podría ponerse gracioso.','Hello, Alberto. Systems online. Humor at '+state.humor+' percent. Brace yourself.'):tr('Hola, Alberto. Sistemas en línea.','Hello, Alberto. Systems online.'))};
@@ -804,7 +951,7 @@ function applyRemote(r){
     ['humor','sarcasm','brevity','honesty'].forEach(k=>{if(Number.isFinite(Number(r[k])))state[k]=Number(r[k])});
     if(typeof r.confirm==='boolean')state.confirm=r.confirm;
     if(Array.isArray(r.messages))state.messages=r.messages.map(m=>({role:m.role,text:m.text,link:m.link||null}));
-    if(r.cfg&&typeof r.cfg==='object'){['model','wake','contacts','engine','timbre'].forEach(k=>{if(typeof r.cfg[k]==='string')cfg[k]=r.cfg[k]});if(Number.isFinite(Number(r.cfg.robot)))cfg.robot=Number(r.cfg.robot);try{localStorage.setItem(CFG_KEY,JSON.stringify(cfg))}catch{}}
+    if(r.cfg&&typeof r.cfg==='object'){['model','provider','gemModel','localAI','wake','contacts','engine','timbre'].forEach(k=>{if(typeof r.cfg[k]==='string')cfg[k]=r.cfg[k]});if(Number.isFinite(Number(r.cfg.robot)))cfg.robot=Number(r.cfg.robot);try{localStorage.setItem(CFG_KEY,JSON.stringify(cfg))}catch{}}
     state.updatedAt=Number(r.updatedAt)||Date.now();
     localSave();
     ['humor','sarcasm','brevity'].forEach(k=>{if($(k)){$(k).value=state[k];$(k+'Value').textContent=state[k]+'%'}});
@@ -819,7 +966,7 @@ function pushState(){
   const data={name:String(state.name),mode:state.mode,lang:state.lang,theme:state.theme,confirm:!!state.confirm,
     humor:Number(state.humor),sarcasm:Number(state.sarcasm),brevity:Number(state.brevity),honesty:Number(state.honesty),
     messages:state.messages.slice(-60).map(m=>({role:m.role==='user'?'user':'assistant',text:String(m.text||'').slice(0,4000),link:m.link&&m.link.url?{url:String(m.link.url),label:String(m.link.label||'')}:null})),
-    cfg:{model:cfg.model,wake:cfg.wake,contacts:cfg.contacts,engine:cfg.engine,timbre:cfg.timbre,robot:Number(cfg.robot)},
+    cfg:{model:cfg.model,provider:cfg.provider,gemModel:cfg.gemModel,localAI:cfg.localAI,wake:cfg.wake,contacts:cfg.contacts,engine:cfg.engine,timbre:cfg.timbre,robot:Number(cfg.robot)},
     updatedAt:Number(state.updatedAt)||Date.now()};
   setDoc(doc(sync.db,'users',sync.user.uid,'tars','state'),data).then(()=>{sync.lastError='';refreshNet()}).catch(e=>{sync.lastError=friendlyError(e);refreshNet()});
   uploadMissingNotes();
